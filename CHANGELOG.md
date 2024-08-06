@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.3](https://github.com/3d-omics/hg_genotype/compare/v1.1.2...v1.1.3) (2024-08-06)
+
+
+### Bug Fixes
+
+* correct rule names ([d002656](https://github.com/3d-omics/hg_genotype/commit/d0026563ddca0a50ef966c37c5eb938f1ff60449))
+* disable groups ([2461f2e](https://github.com/3d-omics/hg_genotype/commit/2461f2e1f2b753265776279a499d0c1cec2e44dd))
+* path to string ([8de31b0](https://github.com/3d-omics/hg_genotype/commit/8de31b025663ca43827e5ca05e750c8a4e1811d5))
+
+
+### Performance Improvements
+
+* update profile with better values ([9c9e80e](https://github.com/3d-omics/hg_genotype/commit/9c9e80e74c652bdcb4f75aeeb415ac63384b991b))
+
 ## [1.1.2](https://github.com/3d-omics/hg_genotype/compare/v1.1.1...v1.1.2) (2024-06-06)
 
 
