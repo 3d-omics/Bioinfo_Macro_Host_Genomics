@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/3d-omics/hg_genotype/compare/v1.1.3...v1.1.4) (2024-08-06)
+
+
+### Bug Fixes
+
+* upload schema.svg ([675f4de](https://github.com/3d-omics/hg_genotype/commit/675f4dec7d60fc4ee4245a8231f36a4fa258bed6))
+
 ## [1.1.3](https://github.com/3d-omics/hg_genotype/compare/v1.1.2...v1.1.3) (2024-08-06)
 
 
