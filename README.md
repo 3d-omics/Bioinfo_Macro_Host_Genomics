@@ -1,10 +1,10 @@
-# Snakemake workflow: `Bioinfo_Macro_Host_Genomics`
+# Snakemake workflow: `hg_genotype`
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
-[![GitHub actions status](https://github.com/3d-omics/Bioinfo_Macro_Host_Genomics/workflows/Tests/badge.svg?branch=main)](https://github.com/3d-omics/Bioinfo_Macro_Host_Genomics/actions?query=branch%3Amain+workflow%3ATests)
+[![Tests](https://github.com/3d-omics/hg_genotype/actions/workflows/main.yml/badge.svg)](https://github.com/3d-omics/hg_genotype/actions/workflows/main.yml)
 
 
-A Snakemake workflow for  Short Variant Discovery in Host Genomes
+A Snakemake workflow for Short Variant Discovery in Host Genomes
 
 
 ## Usage
