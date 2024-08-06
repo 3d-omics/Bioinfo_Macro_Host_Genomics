@@ -72,6 +72,6 @@ rule reference__recompress__gtf__:
 
 rule reference__recompress:
     input:
-        rules.reference__recompress__genome.output,
-        rules.reference__recompress__vcf.output,
-        rules.reference__recompress__gtf.output,
+        rules.reference__recompress__genome__.output,
+        rules.reference__recompress__vcf__.output,
+        rules.reference__recompress__gtf__.output,
