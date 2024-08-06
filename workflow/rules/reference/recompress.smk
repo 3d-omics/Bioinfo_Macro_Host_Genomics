@@ -1,4 +1,4 @@
-rule reference__recompress__genome:
+rule reference__recompress__genome__:
     """Extract the fasta.gz on config.yaml into genome.fa,gz with bgzip"""
     input:
         fa_gz=features["reference"]["dna"],
@@ -24,7 +24,7 @@ rule reference__recompress__genome:
         """
 
 
-rule reference__recompress__vcf:
+rule reference__recompress__vcf__:
     """Extract the vcf.gz on config.yaml into known_variants.vcf.gz with bgzip"""
     input:
         vcf_gz=features["reference"]["known_vcf"],
@@ -48,7 +48,7 @@ rule reference__recompress__vcf:
         """
 
 
-rule reference__recompress__gtf:
+rule reference__recompress__gtf__:
     """Extract the vcf.gz on config.yaml into known_variants.vcf.gz with bgzip"""
     input:
         gtf_gz=features["reference"]["gtf"],
