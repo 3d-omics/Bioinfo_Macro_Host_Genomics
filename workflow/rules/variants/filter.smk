@@ -38,8 +38,6 @@ rule variants__filter__variant_filtration__:
     params:
         filter_name=lambda w: w.variant_type,
         filter_expression=lambda w: params["variants"]["filter"][w.variant_type],
-    group:
-        "genotype"
     shell:
         """
         gatk VariantFiltration \

@@ -38,8 +38,6 @@ rule align__recalibrate__applybqsr__:
     conda:
         "__environment__.yml"
     threads: 0  # pipe!
-    group:
-        "align"
     shell:
         """
         gatk ApplyBQSR \
@@ -61,8 +59,6 @@ rule align__recalibrate__bam_to_cram__:
         RECALIBRATE / "{sample}.cram.log",
     conda:
         "__environment__.yml"
-    group:
-        "align"
     shell:
         """
         samtools view \

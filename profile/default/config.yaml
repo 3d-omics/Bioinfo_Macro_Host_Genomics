@@ -60,7 +60,7 @@ set-resources:
         mem_mb: 8G
         runtime: 1d
     variants__call__combine_gvcfs__:
-        mem_mb: 8G
+        mem_mb: 16G
         runtime: 1d
     variants__genotype__genotype_gvcfs__:
         mem_mb: 8G
@@ -70,9 +70,9 @@ set-resources:
         mem_mb: 8G
         runtime: 1d
     annotate__vep__:
-        mem_mb: 8G
-        runtime: 4h
+        mem_mb: 16G
+        runtime: 8h
     # swaps
     swaps__somalier__find_sites__:
-        mem_mb: 8G
+        mem_mb: 16G
     # report

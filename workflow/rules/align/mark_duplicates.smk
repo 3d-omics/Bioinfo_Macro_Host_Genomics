@@ -12,8 +12,6 @@ rule align__mark_duplicates__:
         "__environment__.yml"
     params:
         input_cram=compose_input_line_for_mark_duplicates,
-    group:
-        "align"
     shell:
         """
         mkdir --parents {output.bam}.tmp
@@ -42,8 +40,6 @@ rule align__mark_duplicates__bam_to_cram__:
         MARK_DUPLICATES / "{sample_id}.cram.log",
     conda:
         "__environment__.yml"
-    group:
-        "align"
     shell:
         """
         samtools view \

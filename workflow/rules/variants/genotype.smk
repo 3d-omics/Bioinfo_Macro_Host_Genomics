@@ -10,8 +10,6 @@ rule variants__genotype__genotype_gvcfs__:
         GENOTYPE / "{region}.log",
     conda:
         "__environment__.yml"
-    group:
-        "genotype"
     shell:
         """
         gatk GenotypeGVCFs \

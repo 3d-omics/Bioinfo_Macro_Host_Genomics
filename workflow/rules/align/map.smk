@@ -15,12 +15,10 @@ rule align__map__:
     conda:
         "__environment__.yml"
     params:
-        index_prefix=INDEX / "genome",
+        index_prefix=str(INDEX / "genome"),
         extra=params["bowtie2"]["extra"],
         samtools_mem=params["bowtie2"]["samtools"]["mem_per_thread"],
         read_group_header=compose_read_group_header,
-    group:
-        "align"
     shell:
         """
         (bwa-mem2 mem \
