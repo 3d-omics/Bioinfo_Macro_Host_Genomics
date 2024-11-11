@@ -43,7 +43,7 @@ DIPLOID_REGIONS = REGIONS_BED4.query("chrom not in @NON_AUTOSOMES").name
 include: "rules/folders.smk"
 include: "rules/helpers/__main__.smk"
 include: "rules/reference/__main__.smk"
-include: "rules/align/__main__.smk"
+include: "rules/align.smk"
 include: "rules/variants/__main__.smk"
 include: "rules/annotate/__main__.smk"
 include: "rules/swaps/__main__.smk"

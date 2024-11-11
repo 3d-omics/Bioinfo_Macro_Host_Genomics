@@ -1,7 +1,7 @@
 include: "mark_duplicates_functions.smk"
 
 
-rule align__mark_duplicates__:
+rule align__mark_duplicates:
     """Mark duplicates for all contigs and merging samples from different libraries"""
     input:
         cram=get_crams_for_mark_duplicates,
@@ -33,7 +33,7 @@ rule align__mark_duplicates__:
         """
 
 
-rule align__mark_duplicates__bam_to_cram__:
+rule align__mark_duplicates__bam_to_cram:
     input:
         bam=MARK_DUPLICATES / "{sample_id}.bam",
         reference=REFERENCE / "genome.fa.gz",
@@ -55,7 +55,7 @@ rule align__mark_duplicates__bam_to_cram__:
         """
 
 
-rule align__mark_duplicates:
+rule align__mark_duplicates__all:
     """Mark duplicates in all chromosomes and all libraries"""
     input:
         [MARK_DUPLICATES / f"{sample_id}.cram" for sample_id in SAMPLES],
