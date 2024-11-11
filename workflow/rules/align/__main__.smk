@@ -1,4 +1,3 @@
-include: "__functions__.smk"
 include: "reads.smk"
 include: "bwamem2.smk"
 include: "mark_duplicates.smk"

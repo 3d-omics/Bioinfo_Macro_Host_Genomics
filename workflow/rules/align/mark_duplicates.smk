@@ -1,3 +1,6 @@
+include: "mark_duplicates_functions.smk"
+
+
 rule align__mark_duplicates__:
     """Mark duplicates for all contigs and merging samples from different libraries"""
     input:
@@ -9,12 +12,12 @@ rule align__mark_duplicates__:
     log:
         MARK_DUPLICATES / "{sample_id}.bam.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         input_cram=compose_input_line_for_mark_duplicates,
     shell:
         """
-        mkdir --parents {output.bam}.tmp
+        mkdir --parents {output.bam}.tmp 2>> {log} 1>&2
 
         gatk MarkDuplicates \
             {params.input_cram} \
@@ -24,9 +27,9 @@ rule align__mark_duplicates__:
             --COMPRESSION_LEVEL 0 \
             --REFERENCE_SEQUENCE {input.reference} \
             --TMP_DIR {output.bam}.tmp \
-        2> {log} 1>&2
+        2>> {log} 1>&2
 
-        rm -rf {output.bam}.tmp
+        rm -rfv {output.bam}.tmp 2>> {log} 1>&2
         """
 
 
@@ -39,7 +42,7 @@ rule align__mark_duplicates__bam_to_cram__:
     log:
         MARK_DUPLICATES / "{sample_id}.cram.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         """
         samtools view \
