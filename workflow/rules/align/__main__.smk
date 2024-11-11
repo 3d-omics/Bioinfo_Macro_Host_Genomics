@@ -1,4 +1,5 @@
 include: "__functions__.smk"
+include: "reads.smk"
 include: "index.smk"
 include: "map.smk"
 include: "mark_duplicates.smk"

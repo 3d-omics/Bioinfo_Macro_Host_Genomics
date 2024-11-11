@@ -1,7 +1,11 @@
 rule report__step__reads:
     """Collect all reports for the reads step"""
     input:
-        rules.reads__fastqc__all.input,
+        [
+            READS / f"{sample_id}.{library_id}_{end}_fastqc.zip"
+            for sample_id, library_id in SAMPLE_LIBRARY
+            for end in [1, 2]
+        ],
     output:
         html=STEP / "reads.html",
     log:

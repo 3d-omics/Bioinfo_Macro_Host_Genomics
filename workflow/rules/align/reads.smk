@@ -1,4 +1,7 @@
-rule reads__link__:
+include: "reads_functions.smk"
+
+
+rule align__reads:
     """Make a link to the original file, with a prettier name than default"""
     input:
         forward_=get_forward,
@@ -9,7 +12,7 @@ rule reads__link__:
     log:
         READS / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/reads.yml"
     shell:
         """
         ln --symbolic $(readlink --canonicalize {input.forward_}) {output.forward_}
@@ -17,15 +20,15 @@ rule reads__link__:
         """
 
 
-rule reads__link__all:
+rule align__reads__all:
     """Link all reads in the samples.tsv"""
     input:
         [
             READS / f"{sample_id}.{library_id}_{end}.fq.gz"
             for sample_id, library_id in SAMPLE_LIBRARY
-            for end in ["1", "2"]
+            for end in [1, 2]
         ],
 
 
 localrules:
-    reads__link__,
+    align__reads,

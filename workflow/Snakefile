@@ -42,7 +42,6 @@ DIPLOID_REGIONS = REGIONS_BED4.query("chrom not in @NON_AUTOSOMES").name
 # Import subworkflows
 include: "rules/folders.smk"
 include: "rules/helpers/__main__.smk"
-include: "rules/reads/__main__.smk"
 include: "rules/reference/__main__.smk"
 include: "rules/align/__main__.smk"
 include: "rules/variants/__main__.smk"
