@@ -2,6 +2,6 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bcftools = 1.20
-  - ensembl-vep =111.0
+  - bcftools =1.21
+  - ensembl-vep =113.0
   - snpeff =5.2

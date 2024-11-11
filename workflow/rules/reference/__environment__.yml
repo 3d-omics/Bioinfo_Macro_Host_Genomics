@@ -4,4 +4,4 @@ channels:
 dependencies:
   - bedtools =2.31.1
   - gzip =1.13
-  - samtools =1.20
+  - samtools =1.21
