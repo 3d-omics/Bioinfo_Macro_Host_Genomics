@@ -1,7 +1,7 @@
 include: "genotype_functions.smk"
 
 
-rule variants__genotype__genotype_gvcfs__:
+rule variants__genotype__genotype_gvcfs:
     """Genotype a single region"""
     input:
         vcf_gz=CALL / "{region}.vcf.gz",
@@ -23,7 +23,12 @@ rule variants__genotype__genotype_gvcfs__:
         """
 
 
-rule variants__genotype__merge_vcfs__:
+rule variants__genotype__genotype_gvcfs__all:
+    input:
+        [GENOTYPE / f"{region}.vcf.gz" for region in REGIONS],
+
+
+rule variants__genotype__merge_vcfs:
     """Join all the GVCFs into a single one
 
     Mysterioustly MergeVcfs fucks up the file
@@ -50,6 +55,12 @@ rule variants__genotype__merge_vcfs__:
         """
 
 
-rule variants__genotype:
+rule variants__genotype__merge_vcfs__all:
     input:
-        GENOTYPE / "all.vcf.gz",
+        vcf_gz=GENOTYPE / "all.vcf.gz",
+
+
+rule variants__genotype__all:
+    input:
+        rules.variants__genotype__genotype_gvcfs__all.input,
+        rules.variants__genotype__merge_vcfs__all.input,

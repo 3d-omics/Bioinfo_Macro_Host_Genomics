@@ -1,7 +1,7 @@
 include: "call_functions.smk"
 
 
-rule variants__call__haplotype_caller__:
+rule variants__call__haplotype_caller:
     """Call variants for a single library and chromosome"""
     input:
         reference=REFERENCE / "genome.fa.gz",
@@ -42,7 +42,17 @@ rule variants__call__haplotype_caller__:
         """
 
 
-rule variants__call__combine_gvcfs__:
+rule variants__call__haplotype_caller__all:
+    """Run HaplotypeCaller for all samples and regions"""
+    input:
+        [
+            CALL / "{sample_id}" / "{region}.gvcf.gz"
+            for sample_id in SAMPLES
+            for region in REGIONS
+        ],
+
+
+rule variants__call__combine_gvcfs:
     """Combine gVCFs from multiple samples and one region"""
     input:
         vcf_gzs=get_files_to_genotype,
@@ -66,7 +76,14 @@ rule variants__call__combine_gvcfs__:
         """
 
 
-rule variants__call:
-    """Call variants for all libraries and chromosomes"""
+rule variants__call__combine_gvcfs__all:
+    """Run CombineGVCFs for all regions"""
     input:
         [CALL / f"{region}.vcf.gz" for region in REGIONS],
+
+
+rule variants__call__all:
+    """Call variants for all libraries and chromosomes"""
+    input:
+        rules.variants__call__haplotype_caller__all.input,
+        rules.variants__call__combine_gvcfs__all.input,

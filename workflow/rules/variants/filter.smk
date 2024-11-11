@@ -1,4 +1,4 @@
-rule variants__filter__select_variants__:
+rule variants__filter__select_variants:
     """Select only snp/indes from VCF"""
     input:
         vcf=GENOTYPE / "all.vcf.gz",
@@ -23,7 +23,12 @@ rule variants__filter__select_variants__:
         """
 
 
-rule variants__filter__variant_filtration__:
+rule variants__filter__select_variants__all:
+    input:
+        [FILTER / f"{variant_type}.raw.vcf.gz" for variant_type in ["SNP", "INDEL"]],
+
+
+rule variants__filter__variant_filtration:
     """Filter variants for a single chromosome"""
     input:
         reference=REFERENCE / "genome.fa.gz",
@@ -50,7 +55,12 @@ rule variants__filter__variant_filtration__:
         """
 
 
-rule variants__filter__merge_vcfs__:
+rule variants__filter__variant_filtration__all:
+    input:
+        [FILTER / "{variant_type}.filtered.vcf.gz" for variant_type in ["SNP", "INDEL"]],
+
+
+rule variants__filter__merge_vcfs:
     """Merge all VCF chromosomes"""
     input:
         snps=FILTER / "SNP.filtered.vcf.gz",
@@ -71,6 +81,13 @@ rule variants__filter__merge_vcfs__:
         """
 
 
-rule variants__filter:
+rule variants__filter__merge_vcfs__all:
     input:
-        rules.variants__filter__merge_vcfs__.output,
+        FILTER / "all.filtered.vcf.gz",
+
+
+rule variants__filter__all:
+    input:
+        rules.variants__filter__select_variants__all.input,
+        rules.variants__filter__variant_filtration__all.input,
+        rules.variants__filter__merge_vcfs__all.input,

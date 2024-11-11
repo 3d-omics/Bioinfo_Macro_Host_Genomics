@@ -5,4 +5,6 @@ include: "variants/filter.smk"
 
 rule variants__all:
     input:
-        rules.variants__filter.input,
+        rules.variants__call__all.input,
+        rules.variants__genotype__all.input,
+        rules.variants__filter__all.input,
