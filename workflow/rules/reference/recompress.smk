@@ -12,7 +12,7 @@ rule reference__recompress__genome__:
     shell:
         """
         ( gzip \
-            --decompres \
+            --decompress \
             --stdout \
             {input.fa_gz} \
         | bgzip \
