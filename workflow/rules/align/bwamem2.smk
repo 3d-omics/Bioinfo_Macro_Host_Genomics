@@ -50,6 +50,8 @@ rule align__bwamem2__map:
         index_prefix=str(INDEX / "genome"),
         extra=params["align"]["bwamem2"]["extra"],
         read_group_header=compose_read_group_header,
+    group:
+        "align_{sample_id}"
     shell:
         """
         (bwa-mem2 mem \

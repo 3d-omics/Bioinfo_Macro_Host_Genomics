@@ -16,6 +16,8 @@ rule align__mark_duplicates:
     params:
         input_cram=compose_input_line_for_mark_duplicates,
     threads: 0  # Pipe! The bottleneck is in samtools compression
+    group:
+        "align_{sample_id}"
     shell:
         """
         mkdir --parents {output.bam}.tmp 2>> {log} 1>&2
@@ -49,6 +51,8 @@ rule align__mark_duplicates__bam_to_cram:
         MARK_DUPLICATES / "{sample_id}.cram.log",
     conda:
         "../../environments/samtools.yml"
+    group:
+        "align_{sample_id}"
     shell:
         """
         samtools view \

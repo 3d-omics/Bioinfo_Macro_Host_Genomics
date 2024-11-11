@@ -13,6 +13,8 @@ rule align__recalibrate__baserecalibrator:
         RECALIBRATE / "{sample}.log",
     conda:
         "../../environments/gatk4.yml"
+    group:
+        "align_{sample_id}"
     shell:
         """
         gatk BaseRecalibrator \
@@ -38,6 +40,8 @@ rule align__recalibrate__applybqsr:
     conda:
         "../../environments/gatk4.yml"
     threads: 0  # pipe!
+    group:
+        "align_{sample_id}"
     shell:
         """
         gatk ApplyBQSR \
@@ -59,6 +63,8 @@ rule align__recalibrate__bam_to_cram:
         RECALIBRATE / "{sample}.cram.log",
     conda:
         "../../environments/samtools.yml"
+    group:
+        "align_{sample_id}"
     shell:
         """
         samtools view \
