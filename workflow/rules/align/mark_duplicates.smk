@@ -1,5 +1,5 @@
 rule align__mark_duplicates__:
-    """Mark duplicates in a single chromosome from a single library"""
+    """Mark duplicates for all contigs and merging samples from different libraries"""
     input:
         cram=get_crams_for_mark_duplicates,
         reference=REFERENCE / "genome.fa.gz",
