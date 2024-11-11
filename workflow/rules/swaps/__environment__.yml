@@ -1,7 +1,6 @@
 channels:
   - conda-forge
   - bioconda
-  - nodefaults
 dependencies:
   - bcftools =1.20
   - gatk4 =4.5.0.0

@@ -1,7 +1,6 @@
 channels:
   - conda-forge
   - bioconda
-  - nodefaults
 dependencies:
   - bedtools =2.31.1
   - gzip =1.13
