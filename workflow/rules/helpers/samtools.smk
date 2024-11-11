@@ -7,7 +7,7 @@ rule helpers__samtools__gzfai__:
     log:
         "{prefix}.fa.gz.fai.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools faidx {input} 2> {log} 1>&2"
 
@@ -21,7 +21,7 @@ rule helpers__samtools__crai__:
     log:
         "{prefix}.cram.crai.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools index {input} 2> {log} 1>&2"
 
@@ -35,7 +35,7 @@ rule helpers__samtools__dict_fa__:
     log:
         "{prefix}.dict.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools dict {input} --output {output} 2> {log} 1>&2"
 
@@ -49,7 +49,7 @@ rule helpers__samtools__dict_fagz__:
     log:
         "{prefix}.dict.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools dict {input} --output {output} 2> {log} 1>&2"
 
@@ -63,7 +63,7 @@ rule helpers__samtools__vcf_gz__:
     log:
         "{prefix}.vcf.gz.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "bgzip {input} 2> {log} 1>&2"
 
@@ -78,7 +78,7 @@ rule helpers__samtools__samtools_stats_cram__:
     log:
         "{prefix}.stats.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools stats {input.cram} > {output.tsv} 2> {log}"
 
@@ -93,7 +93,7 @@ rule helpers__samtools__samtools_flagstats_cram__:
     log:
         "{prefix}.flagstats.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools flagstats {input.cram} > {output.txt} 2> {log}"
 
@@ -108,7 +108,7 @@ rule helpers__samtools__samtools_idxstats_cram__:
     log:
         "{prefix}.idxstats.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "samtools idxstats {input.cram} > {output.tsv} 2> {log}"
 
@@ -121,6 +121,6 @@ rule helpers__samtools__tabix_gtf_gz__:
     log:
         "{prefix}.gtf.gz.tbi.log",
     conda:
-        "__environment__.yml"
+        "../../environments/samtools.yml"
     shell:
         "tabix -p gff {input.gtf_gz} 2> {log}"

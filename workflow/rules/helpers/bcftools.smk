@@ -5,7 +5,7 @@ rule helpers__bcftools__index_vcf_csi__:
     output:
         "{prefix}.vcf.gz.csi",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     log:
         "{prefix}.vcf.gz.csi.log",
     shell:
@@ -19,7 +19,7 @@ rule helpers__bcftools__index_vcf_tbi__:
     output:
         "{prefix}.vcf.gz.tbi",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     log:
         "{prefix}.vcf.gz.tbi.log",
     shell:
