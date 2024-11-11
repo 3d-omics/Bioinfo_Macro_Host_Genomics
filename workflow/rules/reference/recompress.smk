@@ -1,4 +1,4 @@
-rule reference__recompress__genome__:
+rule reference__recompress__genome:
     """Extract the fasta.gz on config.yaml into genome.fa,gz with bgzip"""
     input:
         fa_gz=features["reference"]["dna"],
@@ -7,7 +7,7 @@ rule reference__recompress__genome__:
     log:
         REFERENCE / "genome.log",
     conda:
-        "__environment__.yml"
+        "../../environments/reference.yml"
     cache: "omit-software"
     shell:
         """
@@ -24,7 +24,7 @@ rule reference__recompress__genome__:
         """
 
 
-rule reference__recompress__vcf__:
+rule reference__recompress__vcf:
     """Extract the vcf.gz on config.yaml into known_variants.vcf.gz with bgzip"""
     input:
         vcf_gz=features["reference"]["known_vcf"],
@@ -33,7 +33,7 @@ rule reference__recompress__vcf__:
     log:
         REFERENCE / "known_variants.log",
     conda:
-        "__environment__.yml"
+        "../../environments/reference.yml"
     cache: "omit-software"
     shell:
         """
@@ -48,7 +48,7 @@ rule reference__recompress__vcf__:
         """
 
 
-rule reference__recompress__gtf__:
+rule reference__recompress__gtf:
     """Extract the vcf.gz on config.yaml into known_variants.vcf.gz with bgzip"""
     input:
         gtf_gz=features["reference"]["gtf"],
@@ -57,7 +57,7 @@ rule reference__recompress__gtf__:
     log:
         REFERENCE / "annotation.log",
     conda:
-        "__environment__.yml"
+        "../../environments/reference.yml"
     cache: "omit-software"
     shell:
         """
@@ -70,8 +70,8 @@ rule reference__recompress__gtf__:
         """
 
 
-rule reference__recompress:
+rule reference__recompress__all:
     input:
-        rules.reference__recompress__genome__.output,
-        rules.reference__recompress__vcf__.output,
-        rules.reference__recompress__gtf__.output,
+        rules.reference__recompress__genome.output,
+        rules.reference__recompress__vcf.output,
+        rules.reference__recompress__gtf.output,

@@ -42,7 +42,7 @@ DIPLOID_REGIONS = REGIONS_BED4.query("chrom not in @NON_AUTOSOMES").name
 # Import subworkflows
 include: "rules/folders.smk"
 include: "rules/helpers/__main__.smk"
-include: "rules/reference/__main__.smk"
+include: "rules/reference.smk"
 include: "rules/align.smk"
 include: "rules/variants/__main__.smk"
 include: "rules/annotate/__main__.smk"
@@ -53,11 +53,12 @@ include: "rules/report/__main__.smk"
 rule all:
     """Run the entire pipeline"""
     input:
+        rules.reference__all.input,
         rules.align__all.input,
         rules.report__step.input,
 
 
 rule cache:
     input:
-        rules.reference.input,
+        rules.reference__all.input,
         rules.align__bwamem2__index__all.input,
