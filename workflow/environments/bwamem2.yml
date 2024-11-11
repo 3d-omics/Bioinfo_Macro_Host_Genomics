@@ -2,6 +2,5 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bcftools =1.21
-  - gatk4 =4.6.1.0
+  - bwa-mem2 =2.2.1
   - samtools =1.21

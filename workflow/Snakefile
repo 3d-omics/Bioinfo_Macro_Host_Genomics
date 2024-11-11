@@ -59,4 +59,4 @@ rule all:
 rule cache:
     input:
         rules.reference.input,
-        rules.align__index.input,
+        rules.align__bwamem2__index__all.input,

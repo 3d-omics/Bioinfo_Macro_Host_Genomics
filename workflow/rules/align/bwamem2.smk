@@ -1,4 +1,36 @@
-rule align__map__:
+include: "bwamem2_functions.smk"
+
+
+rule align__bwamem2__index:
+    """Build genome index with bwa"""
+    input:
+        reference=REFERENCE / "genome.fa.gz",
+    output:
+        multiext(f"{INDEX}/genome.", "amb", "bwt.2bit.64", "pac", "0123", "ann"),
+    log:
+        INDEX / "build.log",
+    conda:
+        "../../environments/bwamem2.yml"
+    params:
+        output_path=str(INDEX / "genome"),
+        extra=params["align"]["bwamem2"]["extra"],
+    cache: True
+    shell:
+        """
+        bwa-mem2 index \
+            -p {params.output_path} \
+            {input.reference} \
+            {params.extra} \
+        2> {log} 1>&2
+        """
+
+
+rule align__bwamem2__index__all:
+    input:
+        rules.align__bwamem2__index.output,
+
+
+rule align__bwamem2__map:
     """Map one library to reference genome using bowtie2
 
     Output SAM file is piped to samtools sort to generate a CRAM file.
@@ -13,11 +45,10 @@ rule align__map__:
     log:
         MAP / "{sample_id}.{library_id}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bwamem2.yml"
     params:
         index_prefix=str(INDEX / "genome"),
-        extra=params["bowtie2"]["extra"],
-        samtools_mem=params["bowtie2"]["samtools"]["mem_per_thread"],
+        extra=params["align"]["bwamem2"]["extra"],
         read_group_header=compose_read_group_header,
     shell:
         """
@@ -29,7 +60,6 @@ rule align__map__:
             {input.forward_} \
             {input.reverse_} \
         | samtools sort \
-            -m {params.samtools_mem} \
             -o {output.cram} \
             --reference {input.reference} \
             --threads {threads} \
@@ -37,14 +67,16 @@ rule align__map__:
         """
 
 
-# There is no point in separating bwa from samtools since they switch between
-# aligning and sorting
-
-
-rule align__map:
+rule align__bwamem2__map__all:
     """Collect the results of `bowtie2_map_one` for all libraries"""
     input:
         [
             MAP / f"{sample_id}.{library_id}.cram"
             for sample_id, library_id in SAMPLE_LIBRARY
         ],
+
+
+rule align__bwamem2__all:
+    input:
+        rules.align__bwamem2__index__all.input,
+        rules.align__bwamem2__map__all.input,
