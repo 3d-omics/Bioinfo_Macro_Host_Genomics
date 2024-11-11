@@ -1,34 +1,11 @@
-rule report__step__reads:
-    """Collect all reports for the reads step"""
+rule report__step__align:
+    """Collect all reports for the bowtie2 step"""
     input:
         [
             READS / f"{sample_id}.{library_id}_{end}_fastqc.zip"
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in [1, 2]
         ],
-    output:
-        html=STEP / "reads.html",
-    log:
-        STEP / "reads.log",
-    conda:
-        "__environment__.yml"
-    params:
-        dir=STEP,
-    shell:
-        """
-        multiqc \
-            --filename reads \
-            --title reads \
-            --force \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
-
-
-rule report__step__align:
-    """Collect all reports for the bowtie2 step"""
-    input:
         [
             MAP / f"{sample_id}.{library_id}.{report}"
             for sample_id, library_id in SAMPLE_LIBRARY
@@ -116,7 +93,6 @@ rule report__step__swaps:
 rule report__step:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report__step__reads.output,
         rules.report__step__align.output,
         rules.report__step__annotate.output,
         rules.report__step__swaps.output,
