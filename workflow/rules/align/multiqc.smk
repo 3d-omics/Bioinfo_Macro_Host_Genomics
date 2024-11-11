@@ -1,34 +1,34 @@
 rule align__multiqc:
     """Collect all reports for the align submodule step"""
     input:
-        [
+        reads=[
             READS / f"{sample_id}.{library_id}_{end}_fastqc.zip"
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in [1, 2]
         ],
-        [
+        bwamem2=[
             MAP / f"{sample_id}.{library_id}.{report}"
             for sample_id, library_id in SAMPLE_LIBRARY
             for report in BAM_REPORTS
         ],
-        [
+        markduplicates=[
             MARK_DUPLICATES / f"{sample_id}.{report}"
             for sample_id in SAMPLES
             for report in BAM_REPORTS
         ],
-        [
+        recalibrate=[
             RECALIBRATE / f"{sample_id}.{report}"
             for sample_id, library_id in SAMPLE_LIBRARY
             for report in BAM_REPORTS
         ],
     output:
-        html=STEP / "align.html",
+        html=RESULTS / "align.html",
     log:
-        STEP / "align.log",
+        RESULTS / "align.log",
     conda:
         "../../environments/multiqc.yml"
     params:
-        dir=STEP,
+        dir=RESULTS,
     shell:
         """
         multiqc \
