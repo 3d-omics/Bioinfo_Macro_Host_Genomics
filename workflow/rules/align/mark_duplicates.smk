@@ -15,6 +15,7 @@ rule align__mark_duplicates:
         "../../environments/gatk4.yml"
     params:
         input_cram=compose_input_line_for_mark_duplicates,
+    threads: 0  # Pipe! The bottleneck is in samtools compression
     shell:
         """
         mkdir --parents {output.bam}.tmp 2>> {log} 1>&2
@@ -34,6 +35,11 @@ rule align__mark_duplicates:
 
 
 rule align__mark_duplicates__bam_to_cram:
+    """Conver MarkDuplicates from BAM to CRAM
+
+    Note: As of 2024-11-11 it is not possible to pipe directly to samtools because of a
+    rogue character sent to samtools.
+    """
     input:
         bam=MARK_DUPLICATES / "{sample_id}.bam",
         reference=REFERENCE / "genome.fa.gz",
