@@ -8,7 +8,7 @@ rule reference__recompress__genome__:
         REFERENCE / "genome.log",
     conda:
         "__environment__.yml"
-    cache: True
+    cache: "omit-software"
     shell:
         """
         ( gzip \
@@ -34,7 +34,7 @@ rule reference__recompress__vcf__:
         REFERENCE / "known_variants.log",
     conda:
         "__environment__.yml"
-    cache: True
+    cache: "omit-software"
     shell:
         """
         ( gzip \
@@ -58,7 +58,7 @@ rule reference__recompress__gtf__:
         REFERENCE / "annotation.log",
     conda:
         "__environment__.yml"
-    cache: True
+    cache: "omit-software"
     shell:
         """
         ( bedtools sort \

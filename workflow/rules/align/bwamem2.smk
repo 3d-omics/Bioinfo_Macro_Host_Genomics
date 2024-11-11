@@ -14,7 +14,7 @@ rule align__bwamem2__index:
     params:
         output_path=str(INDEX / "genome"),
         extra=params["align"]["bwamem2"]["extra"],
-    cache: True
+    cache: "omit-software"
     shell:
         """
         bwa-mem2 index \
