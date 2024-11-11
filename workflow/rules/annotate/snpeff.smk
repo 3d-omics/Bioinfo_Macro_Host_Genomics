@@ -1,4 +1,4 @@
-rule annotate__snpeff__download__:
+rule annotate__snpeff__download:
     """Download a SNPEff database"""
     output:
         db=directory(SNPEFF_DB / "{snpeff_db}"),
@@ -19,7 +19,7 @@ rule annotate__snpeff__download__:
         """
 
 
-rule annotate__snpeff__annotate__:
+rule annotate__snpeff__annotate:
     """Annotate variants with a SNPEff database"""
     input:
         vcf=FILTER / "all.filtered.vcf.gz",
@@ -57,7 +57,7 @@ rule annotate__snpeff__annotate__:
         """
 
 
-rule annotate__snpeff:
+rule annotate__snpeff__all:
     """Run SNPeff for all databases"""
     input:
         [SNPEFF / f"snpEff_stats_{snpeff_db}.csv" for snpeff_db in SNPEFF_DBS],

@@ -45,7 +45,7 @@ include: "rules/helpers.smk"
 include: "rules/reference.smk"
 include: "rules/align.smk"
 include: "rules/variants.smk"
-include: "rules/annotate/__main__.smk"
+include: "rules/annotate.smk"
 include: "rules/swaps/__main__.smk"
 include: "rules/report/__main__.smk"
 

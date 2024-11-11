@@ -1,17 +1,12 @@
-rule annotate__vep__:
+rule annotate__vep__tmp_vcf:
     input:
         vcf=FILTER / "all.filtered.vcf.gz",
-        fa=REFERENCE / "genome.fa.gz",
-        gtf=REFERENCE / "annotation.gtf.gz",
-        gtf_tbi=REFERENCE / "annotation.gtf.gz.tbi",
     output:
-        vcf=VEP / "{sample}.vcf.gz",
         tmp=temp(VEP / "{sample}.tmp.vcf.gz"),
-        html=VEP / "{sample}.vep.html",
     log:
-        VEP / "{sample}.log",
+        VEP / "{sample}.tmp_vcf.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     params:
         sample=lambda w: w.sample,
     shell:
@@ -23,9 +18,28 @@ rule annotate__vep__:
             --trim-alt-alleles \
             {input.vcf} \
         2> {log} 2>&1
+        """
 
+
+rule annotate__vep:
+    input:
+        vcf=VEP / "{sample}.tmp.vcf.gz",
+        fa=REFERENCE / "genome.fa.gz",
+        gtf=REFERENCE / "annotation.gtf.gz",
+        gtf_tbi=REFERENCE / "annotation.gtf.gz.tbi",
+    output:
+        vcf=VEP / "{sample}.vcf.gz",
+        html=VEP / "{sample}.vep.html",
+    log:
+        VEP / "{sample}.log",
+    conda:
+        "../../environments/vep.yml"
+    params:
+        sample=lambda w: w.sample,
+    shell:
+        """
         vep \
-            --input_file {output.tmp} \
+            --input_file {input.vcf} \
             --output_file {output.vcf} \
             --fasta {input.fa} \
             --gtf {input.gtf} \
@@ -36,11 +50,6 @@ rule annotate__vep__:
         """
 
 
-rule annotate__vep__reports:
-    input:
-        [VEP / f"{sample}.vep.html" for sample in SAMPLES],
-
-
-rule annotate__vep:
+rule annotate__vep__all:
     input:
         [VEP / f"{sample}.vcf.gz" for sample in SAMPLES],
