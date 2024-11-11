@@ -55,7 +55,6 @@ rule all:
     """Run the entire pipeline"""
     input:
         rules.report__step.input,
-        rules.report__sample.input,
 
 
 rule cache:
