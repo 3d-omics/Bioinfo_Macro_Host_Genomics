@@ -1,5 +1,3 @@
-
-
 rule report__step__annotate:
     """Collect all reports for the snpeff step"""
     input:
