@@ -26,7 +26,7 @@ rule report__step__align:
     log:
         STEP / "align.log",
     conda:
-        "__environment__.yml"
+        "../../environments/multiqc.yml"
     params:
         dir=STEP,
     shell:
@@ -52,7 +52,7 @@ rule report__step__annotate:
     log:
         STEP / "annotate.log",
     conda:
-        "__environment__.yml"
+        "../../environments/multiqc.yml"
     params:
         dir=STEP,
     shell:
@@ -75,7 +75,7 @@ rule report__step__swaps:
     log:
         STEP / "swaps.log",
     conda:
-        "__environment__.yml"
+        "../../environments/multiqc.yml"
     params:
         dir=STEP,
     shell:
