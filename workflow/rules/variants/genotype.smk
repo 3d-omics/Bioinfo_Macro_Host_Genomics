@@ -1,3 +1,6 @@
+include: "genotype_functions.smk"
+
+
 rule variants__genotype__genotype_gvcfs__:
     """Genotype a single region"""
     input:
@@ -9,7 +12,7 @@ rule variants__genotype__genotype_gvcfs__:
     log:
         GENOTYPE / "{region}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     shell:
         """
         gatk GenotypeGVCFs \
@@ -33,7 +36,7 @@ rule variants__genotype__merge_vcfs__:
     log:
         GENOTYPE / "all.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     params:
         input_string=compose_merge_vcfs_input_line,
     shell:

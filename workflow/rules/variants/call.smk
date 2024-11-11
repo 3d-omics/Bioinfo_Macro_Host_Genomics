@@ -1,3 +1,6 @@
+include: "call_functions.smk"
+
+
 rule variants__call__haplotype_caller__:
     """Call variants for a single library and chromosome"""
     input:
@@ -10,7 +13,7 @@ rule variants__call__haplotype_caller__:
     log:
         CALL / "{sample_id}" / "{region}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         ploidy=get_ploidy_of_sample_and_chromosome,
         interval=get_interval_for_haplotype_caller,
@@ -19,20 +22,20 @@ rule variants__call__haplotype_caller__:
         """
         if [[ {params.ploidy} -eq 0 ]] ; then
             gatk HaplotypeCaller \
-                --reference {input.reference} \
-                --input {input.cram} \
-                --output {output.gvcf_gz} \
                 --emit-ref-confidence GVCF \
+                --input {input.cram} \
                 --intervals {params.mock_interval} \
+                --output {output.gvcf_gz} \
+                --reference {input.reference} \
                 --sample-ploidy 1 \
             2> {log} 1>&2
         else
             gatk HaplotypeCaller \
-                --reference {input.reference} \
-                --input {input.cram} \
-                --output {output.gvcf_gz} \
                 --emit-ref-confidence GVCF \
+                --input {input.cram} \
                 --intervals {params.interval} \
+                --output {output.gvcf_gz} \
+                --reference {input.reference} \
                 --sample-ploidy {params.ploidy} \
             2> {log} 1>&2
         fi
@@ -50,15 +53,15 @@ rule variants__call__combine_gvcfs__:
     log:
         CALL / "{region}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         variant_line=compose_v_line,
     shell:
         """
         gatk CombineGVCFs \
-            {params.variant_line} \
-            --reference {input.reference} \
             --output {output.vcf_gz} \
+            --reference {input.reference} \
+            {params.variant_line} \
         2> {log} 1>&2
         """
 

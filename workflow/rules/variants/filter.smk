@@ -9,7 +9,7 @@ rule variants__filter__select_variants__:
     log:
         FILTER / "{variant_type}.raw.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         variant_type=lambda w: w.variant_type,
     shell:
@@ -34,7 +34,7 @@ rule variants__filter__variant_filtration__:
     log:
         FILTER / "{variant_type}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         filter_name=lambda w: w.variant_type,
         filter_expression=lambda w: params["variants"]["filter"][w.variant_type],
@@ -60,7 +60,7 @@ rule variants__filter__merge_vcfs__:
     log:
         FILTER / "all.filtered.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     shell:
         """
         gatk MergeVcfs \
