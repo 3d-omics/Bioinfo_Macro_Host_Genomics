@@ -46,7 +46,7 @@ rule variants__call__haplotype_caller__all:
     """Run HaplotypeCaller for all samples and regions"""
     input:
         [
-            CALL / "{sample_id}" / "{region}.gvcf.gz"
+            CALL / f"{sample_id}" / f"{region}.gvcf.gz"
             for sample_id in SAMPLES
             for region in REGIONS
         ],

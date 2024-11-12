@@ -2,7 +2,7 @@ rule annotate__vep__tmp_vcf:
     input:
         vcf=FILTER / "all.filtered.vcf.gz",
     output:
-        tmp=temp(VEP / "{sample}.tmp.vcf.gz"),
+        tmp=temp(VEP / "{sample}.tmp"),
     log:
         VEP / "{sample}.tmp_vcf.log",
     conda:
@@ -23,7 +23,7 @@ rule annotate__vep__tmp_vcf:
 
 rule annotate__vep:
     input:
-        vcf=VEP / "{sample}.tmp.vcf.gz",
+        vcf=VEP / "{sample}.tmp",
         fa=REFERENCE / "genome.fa.gz",
         gtf=REFERENCE / "annotation.gtf.gz",
         gtf_tbi=REFERENCE / "annotation.gtf.gz.tbi",

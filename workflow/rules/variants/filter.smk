@@ -57,7 +57,10 @@ rule variants__filter__variant_filtration:
 
 rule variants__filter__variant_filtration__all:
     input:
-        [FILTER / "{variant_type}.filtered.vcf.gz" for variant_type in ["SNP", "INDEL"]],
+        [
+            FILTER / f"{variant_type}.filtered.vcf.gz"
+            for variant_type in ["SNP", "INDEL"]
+        ],
 
 
 rule variants__filter__merge_vcfs:

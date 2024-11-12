@@ -3,13 +3,13 @@ rule annotate__multiqc:
     input:
         [VEP / f"{sample}.vep.html" for sample in SAMPLES],
     output:
-        html=STEP / "annotate.html",
+        html=RESULTS / "annotate.html",
     log:
-        STEP / "annotate.log",
+        RESULTS / "annotate.log",
     conda:
         "../../environments/multiqc.yml"
     params:
-        dir=STEP,
+        dir=RESULTS,
     shell:
         """
         multiqc \
