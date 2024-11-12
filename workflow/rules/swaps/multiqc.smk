@@ -22,7 +22,7 @@ rule swaps__multiqc:
         """
 
 
-rule report__step:
+rule swaps__multiqc__all:
     """Collect all per step reports for the pipeline"""
     input:
-        rules.report__step__swaps.output,
+        rules.swaps__multiqc.output,
