@@ -40,6 +40,8 @@ rule align__bwamem2__map:
         reverse_=READS / "{sample_id}.{library_id}_2.fq.gz",
         idx=multiext(f"{INDEX}/genome", ".amb", ".bwt.2bit.64", ".pac", ".0123", ".ann"),
         reference=REFERENCE / "genome.fa.gz",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         cram=MAP / "{sample_id}.{library_id}.cram",
     log:
