@@ -7,6 +7,8 @@ rule variants__genotype__genotype_gvcfs:
         vcf_gz=CALL / "{region}.vcf.gz",
         reference=REFERENCE / "genome.fa.gz",
         dict_=REFERENCE / "genome.dict",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf_gz=GENOTYPE / "{region}.vcf.gz",
     log:
