@@ -7,19 +7,13 @@ rule align__multiqc:
             for end in [1, 2]
         ],
         bwamem2=[
-            MAP / f"{sample_id}.{library_id}.{report}"
+            MAP / f"{sample_id}.{library_id}.stats"
             for sample_id, library_id in SAMPLE_LIBRARY
-            for report in BAM_REPORTS
         ],
-        markduplicates=[
-            MARK_DUPLICATES / f"{sample_id}.{report}"
-            for sample_id in SAMPLES
-            for report in BAM_REPORTS
-        ],
+        markduplicates=[MARK_DUPLICATES / f"{sample_id}.stats" for sample_id in SAMPLES],
         recalibrate=[
-            RECALIBRATE / f"{sample_id}.{report}"
+            RECALIBRATE / f"{sample_id}.stats"
             for sample_id, library_id in SAMPLE_LIBRARY
-            for report in BAM_REPORTS
         ],
     output:
         html=RESULTS / "align.html",

@@ -51,6 +51,7 @@ use rule * from helpers exclude samtools__stats__bam as helpers__*
 
 # Import subworkflows
 include: "rules/folders.smk"
+include: "rules/helpers.smk"
 include: "rules/reference.smk"
 include: "rules/align.smk"
 include: "rules/variants.smk"

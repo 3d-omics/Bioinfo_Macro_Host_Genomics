@@ -56,7 +56,7 @@ rule align__bwamem2__map:
         "align_{sample_id}"
     shell:
         """
-        (bwa-mem2 mem \
+        ( bwa-mem2 mem \
             -t {threads} \
             -R '{params.read_group_header}' \
             {params.index_prefix} \
