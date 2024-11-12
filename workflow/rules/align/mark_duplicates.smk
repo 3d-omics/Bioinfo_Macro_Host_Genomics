@@ -15,7 +15,6 @@ rule align__mark_duplicates:
         "../../environments/gatk4.yml"
     params:
         input_cram=compose_input_line_for_mark_duplicates,
-    threads: 0  # Pipe! The bottleneck is in samtools compression
     group:
         "align_{sample_id}"
     shell:
