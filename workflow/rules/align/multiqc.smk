@@ -45,4 +45,4 @@ rule align__multiqc:
 
 rule align__multiqc__all:
     input:
-        html=STEP / "align.html",
+        RESULTS / "align.html",
