@@ -2,8 +2,10 @@ rule variants__filter__select_variants:
     """Select only snp/indes from VCF"""
     input:
         vcf=GENOTYPE / "all.vcf.gz",
-        reference=REFERENCE / "genome.fa.gz",
         tbi=GENOTYPE / "all.vcf.gz.tbi",
+        reference=REFERENCE / "genome.fa.gz",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf=FILTER / "{variant_type}.raw.vcf.gz",
     log:
@@ -31,9 +33,11 @@ rule variants__filter__select_variants__all:
 rule variants__filter__variant_filtration:
     """Filter variants for a single chromosome"""
     input:
+        vcf=FILTER / "{variant_type}.raw.vcf.gz",
         reference=REFERENCE / "genome.fa.gz",
         dict_=REFERENCE / "genome.dict",
-        vcf=FILTER / "{variant_type}.raw.vcf.gz",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf=FILTER / "{variant_type}.filtered.vcf.gz",
     log:
