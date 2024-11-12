@@ -1,14 +1,15 @@
-rule report__step__swaps:
+rule swaps__multiqc:
     input:
-        rules.swaps__somalier__report.input,
+        SOMALIER / "relate.pairs.tsv",
+        SOMALIER / "relate.samples.tsv",
     output:
-        html=STEP / "swaps.html",
+        html=RESULTS / "swaps.html",
     log:
-        STEP / "swaps.log",
+        RESULTS / "swaps.log",
     conda:
         "../../environments/multiqc.yml"
     params:
-        dir=STEP,
+        dir=RESULTS,
     shell:
         """
         multiqc \
