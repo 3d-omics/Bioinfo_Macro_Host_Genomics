@@ -1,4 +1,4 @@
-rule align__bcftools__call__:
+rule align__bcftools__call:
     input:
         crams=[MARK_DUPLICATES / f"{sample_id}.cram" for sample_id in SAMPLES],
         crais=[MARK_DUPLICATES / f"{sample_id}.cram.crai" for sample_id in SAMPLES],
@@ -9,7 +9,7 @@ rule align__bcftools__call__:
     log:
         BCFTOOLS / "{region}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     shell:
         """
         ( bcftools mpileup \
@@ -29,7 +29,7 @@ rule align__bcftools__call__:
         """
 
 
-rule align__bcftools__concat__:
+rule align__bcftools__concat:
     input:
         vcfs=[BCFTOOLS / f"{region}.bcf" for region in REGIONS],
     output:
@@ -37,7 +37,7 @@ rule align__bcftools__concat__:
     log:
         BCFTOOLS / "known_variants.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     shell:
         """
         bcftools concat \
@@ -48,6 +48,6 @@ rule align__bcftools__concat__:
         """
 
 
-rule align__bcftools:
+rule align__bcftools__all:
     input:
         vcf=BCFTOOLS / "known_variants.vcf.gz",

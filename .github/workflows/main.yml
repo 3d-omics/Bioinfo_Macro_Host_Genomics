@@ -37,18 +37,17 @@ jobs:
           key: snakemake-conda
 
       - name: Download environments
-        uses: snakemake/snakemake-github-action@v1.24.0
+        uses: snakemake/snakemake-github-action@v1.25.1
         with:
           directory: .
           snakefile: workflow/Snakefile
           args: >
             --use-conda
             --conda-create-envs-only
-            --conda-frontend mamba
             --cores 1
 
       - name: Test workflow
-        uses: snakemake/snakemake-github-action@v1.24.0
+        uses: snakemake/snakemake-github-action@v1.25.1
         with:
           directory: .
           snakefile: workflow/Snakefile
@@ -57,4 +56,8 @@ jobs:
             --show-failed-logs
             --cores 3
             --conda-cleanup-pkgs cache
+            --profile profile/default
             --all-temp
+
+      - name: Cache - unlock permissions
+        run: sudo chmod -R 777 .snakemake/conda

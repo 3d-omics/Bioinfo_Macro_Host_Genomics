@@ -1,15 +1,20 @@
-rule variants__genotype__genotype_gvcfs__:
+include: "genotype_functions.smk"
+
+
+rule variants__genotype__genotype_gvcfs:
     """Genotype a single region"""
     input:
         vcf_gz=CALL / "{region}.vcf.gz",
         reference=REFERENCE / "genome.fa.gz",
         dict_=REFERENCE / "genome.dict",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf_gz=GENOTYPE / "{region}.vcf.gz",
     log:
         GENOTYPE / "{region}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     shell:
         """
         gatk GenotypeGVCFs \
@@ -20,7 +25,12 @@ rule variants__genotype__genotype_gvcfs__:
         """
 
 
-rule variants__genotype__merge_vcfs__:
+rule variants__genotype__genotype_gvcfs__all:
+    input:
+        [GENOTYPE / f"{region}.vcf.gz" for region in REGIONS],
+
+
+rule variants__genotype__merge_vcfs:
     """Join all the GVCFs into a single one
 
     Mysterioustly MergeVcfs fucks up the file
@@ -33,7 +43,7 @@ rule variants__genotype__merge_vcfs__:
     log:
         GENOTYPE / "all.log",
     conda:
-        "__environment__.yml"
+        "../../environments/bcftools.yml"
     params:
         input_string=compose_merge_vcfs_input_line,
     shell:
@@ -47,6 +57,12 @@ rule variants__genotype__merge_vcfs__:
         """
 
 
-rule variants__genotype:
+rule variants__genotype__merge_vcfs__all:
     input:
-        GENOTYPE / "all.vcf.gz",
+        vcf_gz=GENOTYPE / "all.vcf.gz",
+
+
+rule variants__genotype__all:
+    input:
+        rules.variants__genotype__genotype_gvcfs__all.input,
+        rules.variants__genotype__merge_vcfs__all.input,

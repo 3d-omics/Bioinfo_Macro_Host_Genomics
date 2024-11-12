@@ -1,4 +1,4 @@
-rule swaps__somalier__find_sites__:
+rule swaps__somalier__find_sites:
     input:
         vcf=VARIANTS / "filter" / "all.filtered.vcf.gz",
         tbi=VARIANTS / "filter" / "all.filtered.vcf.gz.tbi",
@@ -7,7 +7,7 @@ rule swaps__somalier__find_sites__:
     log:
         SOMALIER / "sites.log",
     conda:
-        "__environment__.yml"
+        "../../environments/somalier.yml"
     params:
         min_allele_number=5,
         min_allele_frequency=0.15,
@@ -22,7 +22,7 @@ rule swaps__somalier__find_sites__:
         """
 
 
-rule swaps__somalier__extract__:
+rule swaps__somalier__extract:
     input:
         sites=SOMALIER / "sites.vcf.gz",
         variants=VARIANTS / "filter" / "all.filtered.vcf.gz",
@@ -33,7 +33,7 @@ rule swaps__somalier__extract__:
     log:
         SOMALIER / "extracted.log",
     conda:
-        "__environment__.yml"
+        "../../environments/somalier.yml"
     params:
         out_dir=SOMALIER / "extracted",
     shell:
@@ -47,7 +47,7 @@ rule swaps__somalier__extract__:
         """
 
 
-rule swaps__somalier__relate__:
+rule swaps__somalier__relate:
     input:
         extracted=[
             SOMALIER / "extracted" / f"{sample_id}.somalier" for sample_id in SAMPLES
@@ -59,7 +59,7 @@ rule swaps__somalier__relate__:
     log:
         SOMALIER / "relate.log",
     conda:
-        "__environment__.yml"
+        "../../environments/somalier.yml"
     params:
         output_prefix=SOMALIER / "relate",
     shell:
@@ -72,12 +72,8 @@ rule swaps__somalier__relate__:
         """
 
 
-rule swaps__somalier__report:
+rule swaps__somalier__all:
     input:
-        pairs=SOMALIER / "relate.pairs.tsv",
-        samples=SOMALIER / "relate.samples.tsv",
-
-
-rule swaps__somalier:
-    input:
-        rules.swaps__somalier__relate__.output,
+        rules.swaps__somalier__find_sites.output,
+        rules.swaps__somalier__extract.output,
+        rules.swaps__somalier__relate.output,

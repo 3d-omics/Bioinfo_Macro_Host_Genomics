@@ -3,6 +3,10 @@
 # https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html,
 # in particular regarding the standardized folder structure mentioned there.
 
+from snakemake.utils import min_version
+
+min_version("8.0.0")
+
 import pandas as pd
 import yaml
 
@@ -16,7 +20,7 @@ samples = pd.read_table("config/samples.tsv", comment="#", dtype="str")
 SAMPLES = samples["sample_id"].drop_duplicates().values.tolist()
 SAMPLE_LIBRARY = samples[["sample_id", "library_id"]].values.tolist()
 SNPEFF_DBS = features["snpeff"]["genome"]
-BAM_REPORTS = ["stats.tsv", "flagstats.txt", "idxstats.tsv"]
+BAM_REPORTS = ["stats.tsv"]  # + ["flagstats.txt", "idxstats.tsv"]
 PICARD_REPORTS = BAM_REPORTS + ["metrics.tsv"]
 REGIONS_BED4 = pd.read_table(
     features["reference"]["regions"],
@@ -35,26 +39,37 @@ NON_AUTOSOMES = set(
 DIPLOID_REGIONS = REGIONS_BED4.query("chrom not in @NON_AUTOSOMES").name
 
 
+module helpers:
+    snakefile:
+        github("jlanga/snakehelpers", path="workflow/Snakefile", branch="devel")
+    config:
+        params
+
+
+use rule * from helpers exclude samtools__stats__bam as helpers__*
+
+
 # Import subworkflows
 include: "rules/folders.smk"
-include: "rules/helpers/__main__.smk"
-include: "rules/reads/__main__.smk"
-include: "rules/reference/__main__.smk"
-include: "rules/align/__main__.smk"
-include: "rules/variants/__main__.smk"
-include: "rules/annotate/__main__.smk"
-include: "rules/swaps/__main__.smk"
-include: "rules/report/__main__.smk"
+include: "rules/helpers.smk"
+include: "rules/reference.smk"
+include: "rules/align.smk"
+include: "rules/variants.smk"
+include: "rules/annotate.smk"
+include: "rules/swaps.smk"
 
 
 rule all:
     """Run the entire pipeline"""
     input:
-        rules.report__step.input,
-        rules.report__sample.input,
+        rules.reference__all.input,
+        rules.align__all.input,
+        rules.variants__all.input,
+        rules.annotate__all.input,
+        rules.swaps__all.input,
 
 
 rule cache:
     input:
-        rules.reference.input,
-        rules.align__index.input,
+        rules.reference__all.input,
+        rules.align__bwamem2__index__all.input,

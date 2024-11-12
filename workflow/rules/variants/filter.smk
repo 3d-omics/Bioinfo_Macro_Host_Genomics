@@ -1,15 +1,17 @@
-rule variants__filter__select_variants__:
+rule variants__filter__select_variants:
     """Select only snp/indes from VCF"""
     input:
         vcf=GENOTYPE / "all.vcf.gz",
-        reference=REFERENCE / "genome.fa.gz",
         tbi=GENOTYPE / "all.vcf.gz.tbi",
+        reference=REFERENCE / "genome.fa.gz",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf=FILTER / "{variant_type}.raw.vcf.gz",
     log:
         FILTER / "{variant_type}.raw.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         variant_type=lambda w: w.variant_type,
     shell:
@@ -23,18 +25,25 @@ rule variants__filter__select_variants__:
         """
 
 
-rule variants__filter__variant_filtration__:
+rule variants__filter__select_variants__all:
+    input:
+        [FILTER / f"{variant_type}.raw.vcf.gz" for variant_type in ["SNP", "INDEL"]],
+
+
+rule variants__filter__variant_filtration:
     """Filter variants for a single chromosome"""
     input:
+        vcf=FILTER / "{variant_type}.raw.vcf.gz",
         reference=REFERENCE / "genome.fa.gz",
         dict_=REFERENCE / "genome.dict",
-        vcf=FILTER / "{variant_type}.raw.vcf.gz",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf=FILTER / "{variant_type}.filtered.vcf.gz",
     log:
         FILTER / "{variant_type}.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     params:
         filter_name=lambda w: w.variant_type,
         filter_expression=lambda w: params["variants"]["filter"][w.variant_type],
@@ -50,7 +59,15 @@ rule variants__filter__variant_filtration__:
         """
 
 
-rule variants__filter__merge_vcfs__:
+rule variants__filter__variant_filtration__all:
+    input:
+        [
+            FILTER / f"{variant_type}.filtered.vcf.gz"
+            for variant_type in ["SNP", "INDEL"]
+        ],
+
+
+rule variants__filter__merge_vcfs:
     """Merge all VCF chromosomes"""
     input:
         snps=FILTER / "SNP.filtered.vcf.gz",
@@ -60,7 +77,7 @@ rule variants__filter__merge_vcfs__:
     log:
         FILTER / "all.filtered.log",
     conda:
-        "__environment__.yml"
+        "../../environments/gatk4.yml"
     shell:
         """
         gatk MergeVcfs \
@@ -71,6 +88,13 @@ rule variants__filter__merge_vcfs__:
         """
 
 
-rule variants__filter:
+rule variants__filter__merge_vcfs__all:
     input:
-        rules.variants__filter__merge_vcfs__.output,
+        FILTER / "all.filtered.vcf.gz",
+
+
+rule variants__filter__all:
+    input:
+        rules.variants__filter__select_variants__all.input,
+        rules.variants__filter__variant_filtration__all.input,
+        rules.variants__filter__merge_vcfs__all.input,
