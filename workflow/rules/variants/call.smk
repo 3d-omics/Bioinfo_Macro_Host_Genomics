@@ -58,6 +58,8 @@ rule variants__call__combine_gvcfs:
         vcf_gzs=get_files_to_genotype,
         reference=REFERENCE / "genome.fa.gz",
         dict_=REFERENCE / "genome.dict",
+        fai=REFERENCE / "genome.fa.gz.fai",
+        gzi=REFERENCE / "genome.fa.gz.gzi",
     output:
         vcf_gz=CALL / "{region}.vcf.gz",
     log:
