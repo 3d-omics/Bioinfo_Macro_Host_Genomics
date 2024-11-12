@@ -37,7 +37,7 @@ jobs:
           key: snakemake-conda
 
       - name: Download environments
-        uses: snakemake/snakemake-github-action@v1.24.0
+        uses: snakemake/snakemake-github-action@v1.25.1
         with:
           directory: .
           snakefile: workflow/Snakefile
@@ -46,8 +46,35 @@ jobs:
             --conda-create-envs-only
             --cores 1
 
+      - name: Snakemake - Remove unused envs
+        uses: snakemake/snakemake-github-action@v1.25.1
+        with:
+          directory: .
+          snakefile: workflow/Snakefile
+          args: >
+            --use-conda
+            --conda-cleanup-envs
+
+      - name: Snakemake - Remove unused tarballs
+        uses: snakemake/snakemake-github-action@v1.25.1
+        with:
+          directory: .
+          snakefile: workflow/Snakefile
+          args: >
+            --use-conda
+            --conda-cleanup-pkgs tarballs
+
+      - name: Snakemake - Remove unused cache
+        uses: snakemake/snakemake-github-action@v1.25.1
+        with:
+          directory: .
+          snakefile: workflow/Snakefile
+          args: >
+            --use-conda
+            --conda-cleanup-pkgs cache
+
       - name: Test workflow
-        uses: snakemake/snakemake-github-action@v1.24.0
+        uses: snakemake/snakemake-github-action@v1.25.1
         with:
           directory: .
           snakefile: workflow/Snakefile
