@@ -41,7 +41,7 @@ DIPLOID_REGIONS = REGIONS_BED4.query("chrom not in @NON_AUTOSOMES").name
 
 module helpers:
     snakefile:
-        github("jlanga/snakehelpers", path="workflow/Snakefile", branch="main")
+        github("jlanga/snakehelpers", path="workflow/Snakefile", branch="devel")
     config:
         params
 
