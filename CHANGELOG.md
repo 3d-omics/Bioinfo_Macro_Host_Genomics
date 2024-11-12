@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.2.0](https://github.com/3d-omics/hg_genotype/compare/v1.1.4...v1.2.0) (2024-11-12)
+
+
+### Features
+
+* demand snakemake 8 ([10030be](https://github.com/3d-omics/hg_genotype/commit/10030be50554e148e25b647ff2fedbe7f5b9fdff))
+
+
+### Bug Fixes
+
+* add all the gzis and fais as necessary ([a68f5af](https://github.com/3d-omics/hg_genotype/commit/a68f5af678a74cc88b517ecfbc1dc52041a479c9))
+* add gzi and fai ([3e647f3](https://github.com/3d-omics/hg_genotype/commit/3e647f32f3336653ad2b934602419469c2b64f87))
+* add misssing file ([b00362a](https://github.com/3d-omics/hg_genotype/commit/b00362a329722f8b7ef1d91a5db2bcc3d861fbef))
+* ask for fai and gzi ([9aedadf](https://github.com/3d-omics/hg_genotype/commit/9aedadf9cad9c39d1768c78d716518410d644820))
+* don't get stats from  snakehelpers ([38b7b5c](https://github.com/3d-omics/hg_genotype/commit/38b7b5cb6fed4cb9a84438505def0ec098175593))
+* execute multiqc swaps ([3aeb3a6](https://github.com/3d-omics/hg_genotype/commit/3aeb3a6b1bd902aaf6615e3799dde1fb46ca5356))
+* typo ([a5ce9a5](https://github.com/3d-omics/hg_genotype/commit/a5ce9a5f9904ab437586127c008db1bb7901698f))
+* wrong wildcard names ([53b9dcc](https://github.com/3d-omics/hg_genotype/commit/53b9dcc1827a9a838b64541ec077e0e34dd0155f))
+
+
+### Performance Improvements
+
+* group align per sample ([c7392f7](https://github.com/3d-omics/hg_genotype/commit/c7392f79e3ea69a4c494f441ad348d5347f2b4e7))
+* omit caching because of version in bwamem2 and reference ([15b3a9d](https://github.com/3d-omics/hg_genotype/commit/15b3a9d8613a49579a954e5267e99217e22936ef))
+
 ## [1.1.4](https://github.com/3d-omics/hg_genotype/compare/v1.1.3...v1.1.4) (2024-08-06)
 
 
