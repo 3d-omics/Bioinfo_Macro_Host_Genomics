@@ -59,3 +59,9 @@ jobs:
             --conda-cleanup-pkgs cache
             --profile profile/default
             --all-temp
+
+      - name: Cache - unlock permissions
+        run: chmod -R 777 .snakemake/conda
+
+      - name: Conda - make space
+        run: mamba clean --all --yes
