@@ -88,6 +88,3 @@ jobs:
 
       - name: Cache - unlock permissions
         run: sudo chmod -R 777 .snakemake/conda
-
-      - name: Conda - make space
-        run: mamba clean --all --yes
