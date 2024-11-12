@@ -40,7 +40,7 @@ rule align__mark_duplicates__bam_to_cram:
     """Conver MarkDuplicates from BAM to CRAM
 
     Note: As of 2024-11-11 it is not possible to pipe directly to samtools because of a
-    rogue character sent to samtools.
+    rogue character sent to samtools instead to stderr.
     """
     input:
         bam=MARK_DUPLICATES / "{sample_id}.bam",
