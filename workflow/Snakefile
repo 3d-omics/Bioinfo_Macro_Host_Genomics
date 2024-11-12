@@ -20,7 +20,7 @@ samples = pd.read_table("config/samples.tsv", comment="#", dtype="str")
 SAMPLES = samples["sample_id"].drop_duplicates().values.tolist()
 SAMPLE_LIBRARY = samples[["sample_id", "library_id"]].values.tolist()
 SNPEFF_DBS = features["snpeff"]["genome"]
-BAM_REPORTS = ["stats.tsv", "flagstats.txt", "idxstats.tsv"]
+BAM_REPORTS = ["stats.tsv"]  # + ["flagstats.txt", "idxstats.tsv"]
 PICARD_REPORTS = BAM_REPORTS + ["metrics.tsv"]
 REGIONS_BED4 = pd.read_table(
     features["reference"]["regions"],
@@ -37,6 +37,16 @@ NON_AUTOSOMES = set(
 )
 
 DIPLOID_REGIONS = REGIONS_BED4.query("chrom not in @NON_AUTOSOMES").name
+
+
+module helpers:
+    snakefile:
+        github("jlanga/snakehelpers", path="workflow/Snakefile", branch="main")
+    config:
+        params
+
+
+use rule * from helpers exclude samtools__stats__bam as helpers__*
 
 
 # Import subworkflows

@@ -1,17 +1,3 @@
-rule helpers__samtools__gzfai__:
-    """Index fa.gz"""
-    input:
-        "{prefix}.fa.gz",
-    output:
-        "{prefix}.fa.gz.fai",
-    log:
-        "{prefix}.fa.gz.fai.log",
-    conda:
-        "../../environments/samtools.yml"
-    shell:
-        "samtools faidx {input} 2> {log} 1>&2"
-
-
 rule helpers__samtools__crai__:
     """Generate a cram index"""
     input:
@@ -81,36 +67,6 @@ rule helpers__samtools__samtools_stats_cram__:
         "../../environments/samtools.yml"
     shell:
         "samtools stats {input.cram} > {output.tsv} 2> {log}"
-
-
-rule helpers__samtools__samtools_flagstats_cram__:
-    """Compute flagstats for a cram"""
-    input:
-        cram="{prefix}.cram",
-        crai="{prefix}.cram.crai",
-    output:
-        txt="{prefix}.flagstats.txt",
-    log:
-        "{prefix}.flagstats.log",
-    conda:
-        "../../environments/samtools.yml"
-    shell:
-        "samtools flagstats {input.cram} > {output.txt} 2> {log}"
-
-
-rule helpers__samtools__samtools_idxstats_cram__:
-    """Compute idxstats for a cram"""
-    input:
-        cram="{prefix}.cram",
-        crai="{prefix}.cram.crai",
-    output:
-        tsv="{prefix}.idxstats.tsv",
-    log:
-        "{prefix}.idxstats.log",
-    conda:
-        "../../environments/samtools.yml"
-    shell:
-        "samtools idxstats {input.cram} > {output.tsv} 2> {log}"
 
 
 rule helpers__samtools__tabix_gtf_gz__:
