@@ -3,10 +3,10 @@ rule align__recalibrate__baserecalibrator:
     input:
         cram=MARK_DUPLICATES / "{sample_id}.cram",
         crai=MARK_DUPLICATES / "{sample_id}.cram.crai",
-        reference=REFERENCE / "genome.fa.gz",
-        dict_=REFERENCE / "genome.dict",
-        known_sites=REFERENCE / "known_variants.vcf.gz",
-        tbi=REFERENCE / "known_variants.vcf.gz.tbi",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
+        dict_=REFERENCE / f"{HOST_NAME}.dict",
+        known_sites=REFERENCE / f"{HOST_NAME}.vcf.gz",
+        tbi=REFERENCE / f"{HOST_NAME}.vcf.gz.tbi",
     output:
         table=RECALIBRATE / "{sample_id}.bsqr.txt",
     log:
@@ -30,9 +30,9 @@ rule align__recalibrate__applybqsr:
     """Apply the recalibration table to a single library and chromosome"""
     input:
         cram=MARK_DUPLICATES / "{sample_id}.cram",
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
         table=RECALIBRATE / "{sample_id}.bsqr.txt",
-        dict_=REFERENCE / "genome.dict",
+        dict_=REFERENCE / f"{HOST_NAME}.dict",
     output:
         bam=pipe(RECALIBRATE / "{sample_id}.bam"),
     log:
@@ -56,7 +56,7 @@ rule align__recalibrate__applybqsr:
 rule align__recalibrate__bam_to_cram:
     input:
         bam=RECALIBRATE / "{sample_id}.bam",
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
     output:
         cram=RECALIBRATE / "{sample_id}.cram",
     log:

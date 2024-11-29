@@ -4,10 +4,10 @@ include: "call_functions.smk"
 rule variants__call__haplotype_caller:
     """Call variants for a single library and chromosome"""
     input:
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
         cram=RECALIBRATE / "{sample_id}.cram",
         crai=RECALIBRATE / "{sample_id}.cram.crai",
-        dict_=REFERENCE / "genome.dict",
+        dict_=REFERENCE / f"{HOST_NAME}.dict",
     output:
         gvcf_gz=CALL / "{sample_id}" / "{region}.gvcf.gz",
     log:
@@ -56,10 +56,10 @@ rule variants__call__combine_gvcfs:
     """Combine gVCFs from multiple samples and one region"""
     input:
         vcf_gzs=get_files_to_genotype,
-        reference=REFERENCE / "genome.fa.gz",
-        dict_=REFERENCE / "genome.dict",
-        fai=REFERENCE / "genome.fa.gz.fai",
-        gzi=REFERENCE / "genome.fa.gz.gzi",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
+        dict_=REFERENCE / f"{HOST_NAME}.dict",
+        fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
+        gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
         vcf_gz=CALL / "{region}.vcf.gz",
     log:

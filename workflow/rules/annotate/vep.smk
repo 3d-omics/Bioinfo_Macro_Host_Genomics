@@ -24,9 +24,9 @@ rule annotate__vep__tmp_vcf:
 rule annotate__vep:
     input:
         vcf=VEP / "{sample}.tmp",
-        fa=REFERENCE / "genome.fa.gz",
-        gtf=REFERENCE / "annotation.gtf.gz",
-        gtf_tbi=REFERENCE / "annotation.gtf.gz.tbi",
+        fa=REFERENCE / f"{HOST_NAME}.fa.gz",
+        gtf=REFERENCE / f"{HOST_NAME}.gtf.gz",
+        gtf_tbi=REFERENCE / f"{HOST_NAME}.gtf.gz.tbi",
     output:
         vcf=VEP / "{sample}.vcf.gz",
         html=VEP / "{sample}.vep.html",

@@ -5,10 +5,10 @@ rule variants__genotype__genotype_gvcfs:
     """Genotype a single region"""
     input:
         vcf_gz=CALL / "{region}.vcf.gz",
-        reference=REFERENCE / "genome.fa.gz",
-        dict_=REFERENCE / "genome.dict",
-        fai=REFERENCE / "genome.fa.gz.fai",
-        gzi=REFERENCE / "genome.fa.gz.gzi",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
+        dict_=REFERENCE / f"{HOST_NAME}.dict",
+        fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
+        gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
         vcf_gz=GENOTYPE / "{region}.vcf.gz",
     log:

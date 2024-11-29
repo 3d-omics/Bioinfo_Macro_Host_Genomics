@@ -5,7 +5,7 @@ rule align__mark_duplicates:
     """Mark duplicates for all contigs and merging samples from different libraries"""
     input:
         cram=get_crams_for_mark_duplicates,
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
     output:
         bam=pipe(MARK_DUPLICATES / "{sample_id}.bam"),
         metrics=MARK_DUPLICATES / "{sample_id}.metrics.tsv",
@@ -43,7 +43,7 @@ rule align__mark_duplicates__bam_to_cram:
     """
     input:
         bam=MARK_DUPLICATES / "{sample_id}.bam",
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
     output:
         MARK_DUPLICATES / "{sample_id}.cram",
     log:
