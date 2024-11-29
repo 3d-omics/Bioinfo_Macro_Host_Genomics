@@ -46,6 +46,9 @@ jobs:
             --conda-create-envs-only
             --cores 1
 
+      - name: Clean conda cache
+        run: conda clean --all --yes
+
       - name: Test workflow
         uses: snakemake/snakemake-github-action@v1.25.1
         with:
