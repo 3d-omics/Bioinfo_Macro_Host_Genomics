@@ -7,9 +7,3 @@ def get_crams_for_mark_duplicates(wildcards):
         MAP / f"{wildcards.sample_id}.{library_id}.cram" for library_id in libraries
     ]
     return crams
-
-
-def compose_input_line_for_mark_duplicates(wildcards):
-    """Compose input line for mark duplicates"""
-    crams = get_crams_for_mark_duplicates(wildcards)
-    return " ".join(f"--INPUT {cram}" for cram in crams)
