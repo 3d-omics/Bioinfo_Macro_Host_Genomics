@@ -61,6 +61,7 @@ jobs:
             --conda-cleanup-pkgs cache
             --profile profile/default
             --all-temp
+            --dry-run
 
       - name: Cache - unlock permissions
         run: sudo chmod -R 777 .snakemake/conda
