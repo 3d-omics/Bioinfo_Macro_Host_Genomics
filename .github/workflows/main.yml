@@ -36,15 +36,15 @@ jobs:
           path: .snakemake/conda
           key: snakemake-conda
 
-      - name: Download environments
-        uses: snakemake/snakemake-github-action@v1.25.1
-        with:
-          directory: .
-          snakefile: workflow/Snakefile
-          args: >
-            --use-conda
-            --conda-create-envs-only
-            --cores 1
+      # - name: Download environments
+      #   uses: snakemake/snakemake-github-action@v1.25.1
+      #   with:
+      #     directory: .
+      #     snakefile: workflow/Snakefile
+      #     args: >
+      #       --use-conda
+      #       --conda-create-envs-only
+      #       --cores 1
 
       - name: Clean conda cache
         run: conda clean --all --yes
