@@ -1,22 +1,13 @@
 rule annotate__snpeff__download:
     """Download a SNPEff database"""
     output:
-        db=directory(SNPEFF_DB / "{snpeff_db}"),
+        ddirectory(SNPEFF_DB / "{snpeff_db}"),
     log:
         SNPEFF_DB / "{snpeff_db}.log",
     params:
-        datadir=SNPEFF_DB,
-        snpeff_db=lambda w: w.snpeff_db,
-    conda:
-        "__environment__.yml"
-    shell:
-        """
-        snpEff download \
-            {params.snpeff_db} \
-            -dataDir {params.datadir} \
-            -verbose \
-        2> {log} 1>&2
-        """
+        reference=lambda w: w.snpeff_db,
+    wrapper:
+        "v5.2.1/bio/snpeff/download"
 
 
 rule annotate__snpeff__annotate:
