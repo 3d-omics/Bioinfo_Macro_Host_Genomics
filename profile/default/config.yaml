@@ -1,7 +1,7 @@
 __use_yte__: true
 
 default-resources:
-    runtime: 1h
+    runtime: 60
     mem_mb: 1024
 
 set-threads:
@@ -27,47 +27,44 @@ set-resources:
         mem_mb: 4G
     # align
     align__bwamem2__index:
-        mem_mb: 64G
-        runtime: 1d
+        mem_mb: 64 * 1024
+        runtime: 24 * 60
     align__bwamem2__map:
-        mem_mb: 64G
-        runtime: 1d
+        mem_mb: 64 * 1024
+        runtime: 24 * 60
     align__mark_duplicates:
-        mem_mb: 8G
-        runtime: 6h
-    align__mark_duplicates__bam_to_cram:
-        mem_mb: 8G  # this must match align__mark_duplicates__
-        runtime: 12h
+        mem_mb: 8 * 1024
+        runtime: 6 * 60
     align__bcftools__call:
-        mem_mb: 8G
-        runtime: 1d
+        mem_mb: 8 * 1024
+        runtime: 24 * 60
     align__recalibrate__baserecalibrator:
-        mem_mb: 8G
-        runtime: 1d
+        mem_mb: 8 * 1024
+        runtime: 24 * 60
     align__recalibrate__applybqsr:
-        mem_mb: 8G
-        runtime: 1d
+        mem_mb: 8 * 1024
+        runtime: 24 * 60
     align__recalibrate__bam_to_cram:
-        mem_mb: 8G  # this should match align__recalibrate__applybqsr__
-        runtime: 6h
+        mem_mb: 8 * 1024
+        runtime: 6 * 60
     align__multiqc:
-        mem_mb: 8G
-        runtime: 6h
+        mem_mb: 8 * 1024
+        runtime: 6 * 60
     # variants
     variants__call__haplotype_caller:
-        mem_mb: 8G
-        runtime: 1d
+        mem_mb: 8 * 1024
+        runtime: 24 * 60
     variants__call__combine_gvcfs:
-        mem_mb: 16G
-        runtime: 1d
+        mem_mb: 16 * 1024
+        runtime: 24 * 60
     variants__genotype__genotype_gvcfs:
-        mem_mb: 8G
-        runtime: 1d
+        mem_mb: 8 * 1024
+        runtime: 24 * 60
     # annotate
     annotate__vep:
-        mem_mb: 16G
-        runtime: 8h
+        mem_mb: 16 * 1024
+        runtime: 8 * 60
     # swaps
     swaps__somalier__find_sites:
-        mem_mb: 16G
+        mem_mb: 16 * 1024
     # report
