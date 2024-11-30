@@ -10,6 +10,9 @@ rule align__bcftools__call:
         BCFTOOLS / "{region}.log",
     conda:
         "../../environments/bcftools.yml"
+    resources:
+        mem_mb=8 * 1024,
+        runtime=24 * 60,
     shell:
         """
         ( bcftools mpileup \
