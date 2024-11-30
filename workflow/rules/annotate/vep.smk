@@ -1,29 +1,19 @@
 rule annotate__vep__tmp_vcf:
     input:
-        vcf=FILTER / "all.filtered.vcf.gz",
+        FILTER / "all.filtered.vcf.gz",
     output:
-        tmp=temp(VEP / "{sample}.tmp"),
+        temp(VEP / "{sample}.vcf"),
     log:
         VEP / "{sample}.tmp_vcf.log",
-    conda:
-        "../../environments/bcftools.yml"
     params:
-        sample=lambda w: w.sample,
-    shell:
-        """
-        bcftools view \
-            --samples {params.sample} \
-            --output-type z1 \
-            --output-file {output.tmp} \
-            --trim-alt-alleles \
-            {input.vcf} \
-        2> {log} 2>&1
-        """
+        sample=lambda w: f"--samples {w.sample} --trim-alt-alleles",
+    wrapper:
+        "v5.2.1/bio/bcftools/view"
 
 
 rule annotate__vep:
     input:
-        vcf=VEP / "{sample}.tmp",
+        vcf=VEP / "{sample}.vcf",
         fa=REFERENCE / f"{HOST_NAME}.fa.gz",
         gtf=REFERENCE / f"{HOST_NAME}.gtf.gz",
         gtf_tbi=REFERENCE / f"{HOST_NAME}.gtf.gz.tbi",
