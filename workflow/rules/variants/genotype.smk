@@ -1,28 +1,21 @@
-include: "genotype_functions.smk"
-
-
 rule variants__genotype__genotype_gvcfs:
     """Genotype a single region"""
     input:
-        vcf_gz=CALL / "{region}.vcf.gz",
-        reference=REFERENCE / "genome.fa.gz",
-        dict_=REFERENCE / "genome.dict",
-        fai=REFERENCE / "genome.fa.gz.fai",
-        gzi=REFERENCE / "genome.fa.gz.gzi",
+        gvcf=CALL / "{region}.vcf.gz",
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
+        # dict_=REFERENCE / f"{HOST_NAME}.dict",
+        # fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
+        # gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
-        vcf_gz=GENOTYPE / "{region}.vcf.gz",
+        vcf=GENOTYPE / "{region}.vcf.gz",
+        # tbi=GENOTYPE / "{region}.vcf.gz.tbi",
     log:
         GENOTYPE / "{region}.log",
-    conda:
-        "../../environments/gatk4.yml"
-    shell:
-        """
-        gatk GenotypeGVCFs \
-            --variant {input.vcf_gz} \
-            --reference {input.reference} \
-            --output {output.vcf_gz} \
-        2> {log} 1>&2
-        """
+    resources:
+        mem_mb=8 * 1024,
+        runtime=24 * 60,
+    wrapper:
+        "v5.2.1/bio/gatk/genotypegvcfs"
 
 
 rule variants__genotype__genotype_gvcfs__all:
@@ -36,25 +29,14 @@ rule variants__genotype__merge_vcfs:
     Mysterioustly MergeVcfs fucks up the file
     """
     input:
-        vcf_gz=[GENOTYPE / f"{region}.vcf.gz" for region in REGIONS],
+        calls=[GENOTYPE / f"{region}.vcf.gz" for region in REGIONS],
     output:
         vcf_gz=GENOTYPE / "all.vcf.gz",
-        tbi=GENOTYPE / "all.vcf.gz.tbi",
+        # tbi=GENOTYPE / "all.vcf.gz.tbi",
     log:
         GENOTYPE / "all.log",
-    conda:
-        "../../environments/bcftools.yml"
-    params:
-        input_string=compose_merge_vcfs_input_line,
-    shell:
-        """
-        bcftools concat \
-            --output {output.vcf_gz} \
-            --output-type z \
-            --write-index=tbi \
-            {input.vcf_gz} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/bcftools/concat"
 
 
 rule variants__genotype__merge_vcfs__all:

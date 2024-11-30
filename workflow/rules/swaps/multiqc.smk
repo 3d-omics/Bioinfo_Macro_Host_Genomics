@@ -4,22 +4,13 @@ rule swaps__multiqc:
         SOMALIER / "relate.samples.tsv",
     output:
         html=RESULTS / "swaps.html",
+        zip=RESULTS / "swaps.zip",
     log:
         RESULTS / "swaps.log",
-    conda:
-        "../../environments/multiqc.yml"
     params:
-        dir=RESULTS,
-    shell:
-        """
-        multiqc \
-            --title swaps \
-            --force \
-            --filename swaps \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
+        extra="--title swaps --force",
+    wrapper:
+        "v5.1.0/bio/multiqc"
 
 
 rule swaps__multiqc__all:

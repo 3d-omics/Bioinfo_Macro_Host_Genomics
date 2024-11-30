@@ -19,6 +19,8 @@ samples = pd.read_table("config/samples.tsv", comment="#", dtype="str")
 # Generate useful variables
 SAMPLES = samples["sample_id"].drop_duplicates().values.tolist()
 SAMPLE_LIBRARY = samples[["sample_id", "library_id"]].values.tolist()
+
+HOST_NAME = features["reference"]["name"]
 SNPEFF_DBS = features["snpeff"]["genome"]
 BAM_REPORTS = ["stats.tsv"]  # + ["flagstats.txt", "idxstats.tsv"]
 PICARD_REPORTS = BAM_REPORTS + ["metrics.tsv"]
@@ -67,9 +69,3 @@ rule all:
         rules.variants__all.input,
         rules.annotate__all.input,
         rules.swaps__all.input,
-
-
-rule cache:
-    input:
-        rules.reference__all.input,
-        rules.align__bwamem2__index__all.input,

@@ -1,53 +1,45 @@
 rule annotate__vep__tmp_vcf:
     input:
-        vcf=FILTER / "all.filtered.vcf.gz",
+        FILTER / "all.filtered.vcf.gz",
     output:
-        tmp=temp(VEP / "{sample}.tmp"),
+        temp(VEP / "{sample}.vcf"),
     log:
         VEP / "{sample}.tmp_vcf.log",
-    conda:
-        "../../environments/bcftools.yml"
     params:
-        sample=lambda w: w.sample,
-    shell:
-        """
-        bcftools view \
-            --samples {params.sample} \
-            --output-type z1 \
-            --output-file {output.tmp} \
-            --trim-alt-alleles \
-            {input.vcf} \
-        2> {log} 2>&1
-        """
+        sample=lambda w: f"--samples {w.sample} --trim-alt-alleles",
+    wrapper:
+        "v5.2.1/bio/bcftools/view"
+
+
+rule annotate__vep__downlaod_plugins:
+    output:
+        directory(VEP / "plugins"),
+    params:
+        release=100,
+    wrapper:
+        "v5.2.1/bio/vep/plugins"
 
 
 rule annotate__vep:
     input:
-        vcf=VEP / "{sample}.tmp",
-        fa=REFERENCE / "genome.fa.gz",
-        gtf=REFERENCE / "annotation.gtf.gz",
-        gtf_tbi=REFERENCE / "annotation.gtf.gz.tbi",
+        calls=VEP / "{sample}.vcf",
+        fasta=REFERENCE / f"{HOST_NAME}.fa.gz",
+        gff=REFERENCE / f"{HOST_NAME}.gtf.gz",
+        gtf_tbi=REFERENCE / f"{HOST_NAME}.gtf.gz.tbi",
+        plugins=VEP / "plugins",
     output:
-        vcf=VEP / "{sample}.vcf.gz",
-        html=VEP / "{sample}.vep.html",
+        calls=VEP / "{sample}.vcf.gz",
+        stats=VEP / "{sample}.vep.html",
     log:
         VEP / "{sample}.log",
-    conda:
-        "../../environments/vep.yml"
     params:
-        sample=lambda w: w.sample,
-    shell:
-        """
-        vep \
-            --input_file {input.vcf} \
-            --output_file {output.vcf} \
-            --fasta {input.fa} \
-            --gtf {input.gtf} \
-            --compress_output bgzip \
-            --stats_file {output.html} \
-            --buffer_size 500 \
-        2>> {log} 1>&2
-        """
+        extra="--buffer_size 500",
+        plugins=[],
+    resources:
+        mem_mb=16 * 1024,
+        runtime=8 * 60,
+    wrapper:
+        "v5.2.1/bio/vep/annotate"
 
 
 rule annotate__vep__all:

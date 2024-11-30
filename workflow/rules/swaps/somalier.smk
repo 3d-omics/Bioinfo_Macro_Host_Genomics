@@ -11,6 +11,8 @@ rule swaps__somalier__find_sites:
     params:
         min_allele_number=5,
         min_allele_frequency=0.15,
+    resources:
+        mem_mb=16 * 1024,
     shell:
         """
         somalier find-sites \
@@ -26,8 +28,8 @@ rule swaps__somalier__extract:
     input:
         sites=SOMALIER / "sites.vcf.gz",
         variants=VARIANTS / "filter" / "all.filtered.vcf.gz",
-        reference=REFERENCE / "genome.fa.gz",
-        fai=REFERENCE / "genome.fa.gz.fai",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
+        fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
     output:
         [SOMALIER / "extracted" / f"{sample_id}.somalier" for sample_id in SAMPLES],
     log:

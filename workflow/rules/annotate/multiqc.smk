@@ -4,22 +4,13 @@ rule annotate__multiqc:
         [VEP / f"{sample}.vep.html" for sample in SAMPLES],
     output:
         html=RESULTS / "annotate.html",
+        zip=RESULTS / "annotate.zip",
     log:
         RESULTS / "annotate.log",
-    conda:
-        "../../environments/multiqc.yml"
     params:
-        dir=RESULTS,
-    shell:
-        """
-        multiqc \
-            --title annotate \
-            --force \
-            --filename annotate \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
+        extra="--title annotate --force",
+    wrapper:
+        "v5.1.0/bio/multiqc"
 
 
 rule annotate__multiqc__all:

@@ -12,7 +12,8 @@ rule align__reads:
     log:
         READS / "{sample_id}.{library_id}.log",
     conda:
-        "../../environments/reads.yml"
+        "base"
+    localrule: True
     shell:
         """
         ln --symbolic $(readlink --canonicalize {input.forward_}) {output.forward_}
@@ -28,7 +29,3 @@ rule align__reads__all:
             for sample_id, library_id in SAMPLE_LIBRARY
             for end in [1, 2]
         ],
-
-
-localrules:
-    align__reads,

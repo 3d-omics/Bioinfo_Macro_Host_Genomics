@@ -3,12 +3,13 @@ rule reference__recompress__genome:
     input:
         fa_gz=features["reference"]["dna"],
     output:
-        fa_gz=REFERENCE / "genome.fa.gz",
+        fa_gz=REFERENCE / f"{HOST_NAME}.fa.gz",
     log:
-        REFERENCE / "genome.log",
+        REFERENCE / f"{HOST_NAME}.fa.log",
     conda:
         "../../environments/reference.yml"
     cache: "omit-software"
+    threads: 8
     shell:
         """
         ( gzip \
@@ -29,12 +30,13 @@ rule reference__recompress__vcf:
     input:
         vcf_gz=features["reference"]["known_vcf"],
     output:
-        vcf_gz=REFERENCE / "known_variants.vcf.gz",
+        vcf_gz=REFERENCE / f"{HOST_NAME}.vcf.gz",
     log:
-        REFERENCE / "known_variants.log",
+        REFERENCE / f"{HOST_NAME}.vcf.log",
     conda:
         "../../environments/reference.yml"
     cache: "omit-software"
+    threads: 8
     shell:
         """
         ( gzip \
@@ -53,12 +55,15 @@ rule reference__recompress__gtf:
     input:
         gtf_gz=features["reference"]["gtf"],
     output:
-        gtf_gz=REFERENCE / "annotation.gtf.gz",
+        gtf_gz=REFERENCE / f"{HOST_NAME}.gtf.gz",
     log:
-        REFERENCE / "annotation.log",
+        REFERENCE / f"{HOST_NAME}.gtf.log",
     conda:
         "../../environments/reference.yml"
     cache: "omit-software"
+    threads: 8
+    resources:
+        mem_mb=8 * 1024,
     shell:
         """
         ( bedtools sort \

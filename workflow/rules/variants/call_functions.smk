@@ -59,15 +59,6 @@ def get_files_to_genotype(wildcards):
     ]
 
 
-def compose_v_line(wildcards):
-    """Compose the -v line for gatk4 genotype gvcfs"""
-    files = get_files_to_genotype(wildcards)
-    text = ""
-    for file in files:
-        text += f"--variant {file} "
-    return text
-
-
 def get_chromosome_from_region(region):
     """Get the chromosome from a region"""
     return REGIONS_BED4[REGIONS_BED4.name == region].chrom.values[0]

@@ -4,10 +4,10 @@ include: "call_functions.smk"
 rule variants__call__haplotype_caller:
     """Call variants for a single library and chromosome"""
     input:
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
         cram=RECALIBRATE / "{sample_id}.cram",
         crai=RECALIBRATE / "{sample_id}.cram.crai",
-        dict_=REFERENCE / "genome.dict",
+        dict_=REFERENCE / f"{HOST_NAME}.dict",
     output:
         gvcf_gz=CALL / "{sample_id}" / "{region}.gvcf.gz",
     log:
@@ -18,6 +18,9 @@ rule variants__call__haplotype_caller:
         ploidy=get_ploidy_of_sample_and_chromosome,
         interval=get_interval_for_haplotype_caller,
         mock_interval=generate_mock_interval,
+    resources:
+        mem_mb=8 * 1024,
+        time_min=24 * 60,
     shell:
         """
         if [[ {params.ploidy} -eq 0 ]] ; then
@@ -55,27 +58,20 @@ rule variants__call__haplotype_caller__all:
 rule variants__call__combine_gvcfs:
     """Combine gVCFs from multiple samples and one region"""
     input:
-        vcf_gzs=get_files_to_genotype,
-        reference=REFERENCE / "genome.fa.gz",
-        dict_=REFERENCE / "genome.dict",
-        fai=REFERENCE / "genome.fa.gz.fai",
-        gzi=REFERENCE / "genome.fa.gz.gzi",
+        gvcfs=get_files_to_genotype,
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
+        # dict_=REFERENCE / f"{HOST_NAME}.dict",
+        # fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
+        # gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
-        vcf_gz=CALL / "{region}.vcf.gz",
+        gvcf=CALL / "{region}.vcf.gz",
     log:
         CALL / "{region}.log",
-    conda:
-        "../../environments/gatk4.yml"
-    params:
-        variant_line=compose_v_line,
-    shell:
-        """
-        gatk CombineGVCFs \
-            --output {output.vcf_gz} \
-            --reference {input.reference} \
-            {params.variant_line} \
-        2> {log} 1>&2
-        """
+    resources:
+        mem_mb=16 * 1024,
+        runtime=24 * 60,
+    wrapper:
+        "v5.2.1/bio/gatk/combinegvcfs"
 
 
 rule variants__call__combine_gvcfs__all:

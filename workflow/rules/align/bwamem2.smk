@@ -4,30 +4,28 @@ include: "bwamem2_functions.smk"
 rule align__bwamem2__index:
     """Build genome index with bwa"""
     input:
-        reference=REFERENCE / "genome.fa.gz",
+        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
     output:
-        multiext(f"{INDEX}/genome.", "amb", "bwt.2bit.64", "pac", "0123", "ann"),
+        multiext(
+            str(INDEX / HOST_NAME), ".amb", ".bwt.2bit.64", ".pac", ".0123", ".ann"
+        ),
     log:
-        INDEX / "build.log",
-    conda:
-        "../../environments/bwamem2.yml"
-    params:
-        output_path=str(INDEX / "genome"),
-        extra=params["align"]["bwamem2"]["extra"],
+        INDEX / f"{HOST_NAME}.log",
     cache: "omit-software"
-    shell:
-        """
-        bwa-mem2 index \
-            -p {params.output_path} \
-            {input.reference} \
-            {params.extra} \
-        2> {log} 1>&2
-        """
+    threads: 8
+    resources:
+        mem_mb=64 * 1024,
+        runtime=24 * 60,
+    wrapper:
+        "v5.2.1/bio/bwa-mem2/index"
 
 
 rule align__bwamem2__index__all:
     input:
-        rules.align__bwamem2__index.output,
+        [
+            INDEX / f"{HOST_NAME}.{extension}"
+            for extension in ["amb", "bwt.2bit.64", "pac", "0123", "ann"]
+        ],
 
 
 rule align__bwamem2__map:
@@ -36,39 +34,35 @@ rule align__bwamem2__map:
     Output SAM file is piped to samtools sort to generate a CRAM file.
     """
     input:
-        forward_=READS / "{sample_id}.{library_id}_1.fq.gz",
-        reverse_=READS / "{sample_id}.{library_id}_2.fq.gz",
-        idx=multiext(f"{INDEX}/genome", ".amb", ".bwt.2bit.64", ".pac", ".0123", ".ann"),
-        reference=REFERENCE / "genome.fa.gz",
-        fai=REFERENCE / "genome.fa.gz.fai",
-        gzi=REFERENCE / "genome.fa.gz.gzi",
+        reads=[
+            READS / "{sample_id}.{library_id}_1.fq.gz",
+            READS / "{sample_id}.{library_id}_2.fq.gz",
+        ],
+        idx=multiext(
+            str(INDEX / f"{HOST_NAME}"),
+            ".amb",
+            ".bwt.2bit.64",
+            ".pac",
+            ".0123",
+            ".ann",
+        ),
     output:
-        cram=MAP / "{sample_id}.{library_id}.cram",
+        MAP / "{sample_id}.{library_id}.cram",
     log:
         MAP / "{sample_id}.{library_id}.log",
-    conda:
-        "../../environments/bwamem2.yml"
     params:
-        index_prefix=str(INDEX / "genome"),
-        extra=params["align"]["bwamem2"]["extra"],
-        read_group_header=compose_read_group_header,
+        extra=lambda w: f"-R '{compose_read_group_header(w)}'",
+        sort="samtools",
+        sort_order="coordinate",
+        sort_extra="",
     group:
         "align_{sample_id}"
-    shell:
-        """
-        ( bwa-mem2 mem \
-            -t {threads} \
-            -R '{params.read_group_header}' \
-            {params.index_prefix} \
-            {params.extra} \
-            {input.forward_} \
-            {input.reverse_} \
-        | samtools sort \
-            -o {output.cram} \
-            --reference {input.reference} \
-            --threads {threads} \
-        ) 2> {log} 1>&2
-        """
+    threads: 24
+    resources:
+        mem_mb=64 * 1024,
+        runtime=24 * 60,
+    wrapper:
+        "v5.2.1/bio/bwa-mem2/mem"
 
 
 rule align__bwamem2__map__all:
