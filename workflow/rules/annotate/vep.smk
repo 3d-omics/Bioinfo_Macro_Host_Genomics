@@ -11,33 +11,32 @@ rule annotate__vep__tmp_vcf:
         "v5.2.1/bio/bcftools/view"
 
 
+rule annotate__vep__downlaod_plugins:
+    output:
+        directory(VEP / "plugins"),
+    params:
+        release=100,
+    wrapper:
+        "v5.2.1/bio/vep/plugins"
+
+
 rule annotate__vep:
     input:
-        vcf=VEP / "{sample}.vcf",
-        fa=REFERENCE / f"{HOST_NAME}.fa.gz",
-        gtf=REFERENCE / f"{HOST_NAME}.gtf.gz",
+        calls=VEP / "{sample}.vcf",
+        fasta=REFERENCE / f"{HOST_NAME}.fa.gz",
+        gff=REFERENCE / f"{HOST_NAME}.gtf.gz",
         gtf_tbi=REFERENCE / f"{HOST_NAME}.gtf.gz.tbi",
+        plugins=VEP / "plugins",
     output:
-        vcf=VEP / "{sample}.vcf.gz",
-        html=VEP / "{sample}.vep.html",
+        calls=VEP / "{sample}.vcf.gz",
+        stats=VEP / "{sample}.vep.html",
     log:
         VEP / "{sample}.log",
-    conda:
-        "../../environments/vep.yml"
     params:
-        sample=lambda w: w.sample,
-    shell:
-        """
-        vep \
-            --input_file {input.vcf} \
-            --output_file {output.vcf} \
-            --fasta {input.fa} \
-            --gtf {input.gtf} \
-            --compress_output bgzip \
-            --stats_file {output.html} \
-            --buffer_size 500 \
-        2>> {log} 1>&2
-        """
+        extra="--buffer_size 500",
+        plugins=[],
+    wrapper:
+        "v5.2.1/bio/vep/annotate"
 
 
 rule annotate__vep__all:
