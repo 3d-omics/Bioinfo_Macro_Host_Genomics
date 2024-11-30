@@ -13,6 +13,9 @@ rule align__recalibrate__baserecalibrator:
         RECALIBRATE / "{sample_id}.log",
     group:
         "align_{sample_id}"
+    resources:
+        mem_mb=8 * 1024,
+        runtime=24 * 60,
     wrapper:
         "v5.2.1/bio/gatk/baserecalibrator"
 
@@ -30,6 +33,9 @@ rule align__recalibrate__applybqsr:
         RECALIBRATE / "{sample_id}.log",
     group:
         "align_{sample_id}"
+    resources:
+        mem_mb=8 * 1024,
+        runtime=24 * 60,
     wrapper:
         "v5.2.1/bio/gatk/applybqsr"
 

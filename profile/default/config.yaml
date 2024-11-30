@@ -5,24 +5,9 @@ default-resources:
     mem_mb: 1024
 
 set-threads:
-    # align
-    align__recalibrate__applybqsr: 0
-    align__recalibrate__bam_to_cram: 24
 
 
 set-resources:
-    align__recalibrate__baserecalibrator:
-        mem_mb: 8 * 1024
-        runtime: 24 * 60
-    align__recalibrate__applybqsr:
-        mem_mb: 8 * 1024
-        runtime: 24 * 60
-    align__recalibrate__bam_to_cram:
-        mem_mb: 8 * 1024
-        runtime: 6 * 60
-    align__multiqc:
-        mem_mb: 8 * 1024
-        runtime: 6 * 60
     # variants
     variants__call__haplotype_caller:
         mem_mb: 8 * 1024
