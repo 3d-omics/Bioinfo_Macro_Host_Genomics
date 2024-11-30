@@ -55,27 +55,17 @@ rule variants__call__haplotype_caller__all:
 rule variants__call__combine_gvcfs:
     """Combine gVCFs from multiple samples and one region"""
     input:
-        vcf_gzs=get_files_to_genotype,
-        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
-        dict_=REFERENCE / f"{HOST_NAME}.dict",
-        fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
-        gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
+        gvcfs=get_files_to_genotype,
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
+        # dict_=REFERENCE / f"{HOST_NAME}.dict",
+        # fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
+        # gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
-        vcf_gz=CALL / "{region}.vcf.gz",
+        gvcf=CALL / "{region}.vcf.gz",
     log:
         CALL / "{region}.log",
-    conda:
-        "../../environments/gatk4.yml"
-    params:
-        variant_line=compose_v_line,
-    shell:
-        """
-        gatk CombineGVCFs \
-            --output {output.vcf_gz} \
-            --reference {input.reference} \
-            {params.variant_line} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/gatk/combinegvcfs"
 
 
 rule variants__call__combine_gvcfs__all:
