@@ -8,10 +8,6 @@ set-threads:
 
 
 set-resources:
-    # annotate
-    annotate__vep:
-        mem_mb: 16 * 1024
-        runtime: 8 * 60
     # swaps
     swaps__somalier__find_sites:
         mem_mb: 16 * 1024

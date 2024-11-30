@@ -35,6 +35,9 @@ rule annotate__vep:
     params:
         extra="--buffer_size 500",
         plugins=[],
+    resources:
+        mem_mb=16 * 1024,
+        runtime=8 * 60,
     wrapper:
         "v5.2.1/bio/vep/annotate"
 
