@@ -17,24 +17,13 @@ rule align__multiqc:
         ],
     output:
         html=RESULTS / "align.html",
+        zip=RESULTS / "align.zip",
     log:
         RESULTS / "align.log",
-    conda:
-        "../../environments/multiqc.yml"
     params:
-        dir=RESULTS,
-    shell:
-        """
-        multiqc \
-            --title align \
-            --force \
-            --dirs \
-            --dirs-depth 1 \
-            --filename align \
-            --outdir {params.dir} \
-            {input} \
-        2> {log} 1>&2
-        """
+        extra="--title align --dirs --dirs-depth 1 --fullnames --force",
+    wrapper:
+        "v5.1.0/bio/multiqc"
 
 
 rule align__multiqc__all:
