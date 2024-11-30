@@ -8,10 +8,6 @@ set-threads:
 
 
 set-resources:
-    # variants
-    variants__genotype__genotype_gvcfs:
-        mem_mb: 8 * 1024
-        runtime: 24 * 60
     # annotate
     annotate__vep:
         mem_mb: 16 * 1024

@@ -11,6 +11,9 @@ rule variants__genotype__genotype_gvcfs:
         # tbi=GENOTYPE / "{region}.vcf.gz.tbi",
     log:
         GENOTYPE / "{region}.log",
+    resources:
+        mem_mb=8 * 1024,
+        runtime=24 * 60,
     wrapper:
         "v5.2.1/bio/gatk/genotypegvcfs"
 
