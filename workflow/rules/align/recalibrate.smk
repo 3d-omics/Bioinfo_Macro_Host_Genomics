@@ -20,52 +20,27 @@ rule align__recalibrate__baserecalibrator:
 rule align__recalibrate__applybqsr:
     """Apply the recalibration table to a single library and chromosome"""
     input:
-        cram=MARK_DUPLICATES / "{sample_id}.cram",
-        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
-        table=RECALIBRATE / "{sample_id}.bsqr.txt",
-        dict_=REFERENCE / f"{HOST_NAME}.dict",
+        bam=MARK_DUPLICATES / "{sample_id}.cram",
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
+        dict=REFERENCE / f"{HOST_NAME}.dict",
+        recal_table=RECALIBRATE / "{sample_id}.bsqr.txt",
     output:
-        bam=pipe(RECALIBRATE / "{sample_id}.bam"),
+        bam=RECALIBRATE / "{sample_id}.cram",
     log:
         RECALIBRATE / "{sample_id}.log",
-    conda:
-        "../../environments/gatk4.yml"
-    threads: 0  # pipe!
     group:
         "align_{sample_id}"
-    shell:
-        """
-        gatk ApplyBQSR \
-            --input {input.cram} \
-            --reference {input.reference} \
-            --bqsr-recal-file {input.table} \
-            --output {output.bam} \
-        2> {log} 1>&2
-        """
-
-
-rule align__recalibrate__bam_to_cram:
-    input:
-        bam=RECALIBRATE / "{sample_id}.bam",
-        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
-    output:
-        cram=RECALIBRATE / "{sample_id}.cram",
-    log:
-        RECALIBRATE / "{sample_id}.cram.log",
-    conda:
-        "../../environments/samtools.yml"
-    group:
-        "align_{sample_id}"
-    shell:
-        """
-        samtools view \
-            --threads {threads} \
-            --output-fmt CRAM \
-            --reference {input.reference} \
-            --output {output.cram} \
-            {input.bam} \
-        2> {log} 1>&2
-        """
+    # shell:
+    #     """
+    #     gatk ApplyBQSR \
+    #         --input {input.bam} \
+    #         --reference {input.reference} \
+    #         --bqsr-recal-file {input.table} \
+    #         --output {output.bam} \
+    #     2> {log} 1>&2
+    #     """
+    wrapper:
+        "v5.2.1/bio/gatk/applybqsr"
 
 
 rule align__recalibrate__all:
