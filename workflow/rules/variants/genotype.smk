@@ -1,6 +1,3 @@
-include: "genotype_functions.smk"
-
-
 rule variants__genotype__genotype_gvcfs:
     """Genotype a single region"""
     input:
