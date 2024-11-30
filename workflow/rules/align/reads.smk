@@ -12,7 +12,7 @@ rule align__reads:
     log:
         READS / "{sample_id}.{library_id}.log",
     conda:
-        "../../environments/reads.yml"
+        "base"
     localrule: True
     shell:
         """
