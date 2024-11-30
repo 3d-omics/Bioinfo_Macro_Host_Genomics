@@ -30,15 +30,6 @@ rule align__recalibrate__applybqsr:
         RECALIBRATE / "{sample_id}.log",
     group:
         "align_{sample_id}"
-    # shell:
-    #     """
-    #     gatk ApplyBQSR \
-    #         --input {input.bam} \
-    #         --reference {input.reference} \
-    #         --bqsr-recal-file {input.table} \
-    #         --output {output.bam} \
-    #     2> {log} 1>&2
-    #     """
     wrapper:
         "v5.2.1/bio/gatk/applybqsr"
 
