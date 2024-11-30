@@ -12,6 +12,12 @@ rule align__mark_duplicates:
         MARK_DUPLICATES / "{sample_id}.bam.log",
     group:
         "align_{sample_id}"
+    params:
+        samtools_opts="--threads 24",
+    threads: 24
+    resources:
+        mem_mb=8 * 1024,
+        runtime=6 * 60,
     wrapper:
         "v5.2.1/bio/picard/markduplicates"
 

@@ -6,16 +6,11 @@ default-resources:
 
 set-threads:
     # align
-    align__mark_duplicates: 0  # pipe!
-    align__mark_duplicates__bam_to_cram: 24
     align__recalibrate__applybqsr: 0
     align__recalibrate__bam_to_cram: 24
 
 
 set-resources:
-    align__mark_duplicates:
-        mem_mb: 8 * 1024
-        runtime: 6 * 60
     align__bcftools__call:
         mem_mb: 8 * 1024
         runtime: 24 * 60
