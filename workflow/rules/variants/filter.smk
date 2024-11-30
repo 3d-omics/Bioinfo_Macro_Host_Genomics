@@ -3,26 +3,15 @@ rule variants__filter__select_variants:
     input:
         vcf=GENOTYPE / "all.vcf.gz",
         tbi=GENOTYPE / "all.vcf.gz.tbi",
-        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
-        fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
-        gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
     output:
         vcf=FILTER / "{variant_type}.raw.vcf.gz",
     log:
         FILTER / "{variant_type}.raw.log",
-    conda:
-        "../../environments/gatk4.yml"
     params:
-        variant_type=lambda w: w.variant_type,
-    shell:
-        """
-        gatk SelectVariants \
-            --reference {input.reference} \
-            --variant {input.vcf} \
-            --output {output.vcf} \
-            --select-type-to-include {params.variant_type} \
-        2> {log} 1>&2
-        """
+        extra=lambda w: f"--select-type-to-include {w.variant_type}",
+    wrapper:
+        "v5.2.1/bio/gatk/selectvariants"
 
 
 rule variants__filter__select_variants__all:
@@ -34,29 +23,18 @@ rule variants__filter__variant_filtration:
     """Filter variants for a single chromosome"""
     input:
         vcf=FILTER / "{variant_type}.raw.vcf.gz",
-        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
         dict_=REFERENCE / f"{HOST_NAME}.dict",
-        fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
+        # fai=REFERENCE / f"{HOST_NAME}.fa.gz.fai",
         gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
         vcf=FILTER / "{variant_type}.filtered.vcf.gz",
     log:
         FILTER / "{variant_type}.log",
-    conda:
-        "../../environments/gatk4.yml"
     params:
-        filter_name=lambda w: w.variant_type,
-        filter_expression=lambda w: params["variants"]["filter"][w.variant_type],
-    shell:
-        """
-        gatk VariantFiltration \
-            --reference {input.reference} \
-            --variant {input.vcf} \
-            --output {output.vcf} \
-            --filter-expression '{params.filter_expression}' \
-            --filter-name '{params.filter_name}' \
-        2> {log} 1>&2
-        """
+        filters=lambda w: {w.variant_type: params["variants"]["filter"][w.variant_type]},
+    wrapper:
+        "v5.2.1/bio/gatk/variantfiltration"
 
 
 rule variants__filter__variant_filtration__all:
