@@ -11,6 +11,8 @@ rule swaps__somalier__find_sites:
     params:
         min_allele_number=5,
         min_allele_frequency=0.15,
+    resources:
+        mem_mb=16 * 1024,
     shell:
         """
         somalier find-sites \
