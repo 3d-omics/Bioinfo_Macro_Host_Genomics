@@ -11,7 +11,7 @@ rule variants__genotype__genotype_gvcfs:
         # gzi=REFERENCE / f"{HOST_NAME}.fa.gz.gzi",
     output:
         vcf=GENOTYPE / "{region}.vcf.gz",
-        tbi=GENOTYPE / "{region}.vcf.gz.tbi",
+        # tbi=GENOTYPE / "{region}.vcf.gz.tbi",
     log:
         GENOTYPE / "{region}.log",
     wrapper:
@@ -29,25 +29,14 @@ rule variants__genotype__merge_vcfs:
     Mysterioustly MergeVcfs fucks up the file
     """
     input:
-        vcf_gz=[GENOTYPE / f"{region}.vcf.gz" for region in REGIONS],
+        calls=[GENOTYPE / f"{region}.vcf.gz" for region in REGIONS],
     output:
         vcf_gz=GENOTYPE / "all.vcf.gz",
-        tbi=GENOTYPE / "all.vcf.gz.tbi",
+        # tbi=GENOTYPE / "all.vcf.gz.tbi",
     log:
         GENOTYPE / "all.log",
-    conda:
-        "../../environments/bcftools.yml"
-    params:
-        input_string=compose_merge_vcfs_input_line,
-    shell:
-        """
-        bcftools concat \
-            --output {output.vcf_gz} \
-            --output-type z \
-            --write-index=tbi \
-            {input.vcf_gz} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/bcftools/concat"
 
 
 rule variants__genotype__merge_vcfs__all:
