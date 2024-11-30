@@ -1,29 +1,20 @@
 rule align__recalibrate__baserecalibrator:
     """Compute the recalibration table for a single library and chromosome"""
     input:
-        cram=MARK_DUPLICATES / "{sample_id}.cram",
+        bam=MARK_DUPLICATES / "{sample_id}.cram",
         crai=MARK_DUPLICATES / "{sample_id}.cram.crai",
-        reference=REFERENCE / f"{HOST_NAME}.fa.gz",
-        dict_=REFERENCE / f"{HOST_NAME}.dict",
-        known_sites=REFERENCE / f"{HOST_NAME}.vcf.gz",
+        ref=REFERENCE / f"{HOST_NAME}.fa.gz",
+        dict=REFERENCE / f"{HOST_NAME}.dict",
+        known=REFERENCE / f"{HOST_NAME}.vcf.gz",
         tbi=REFERENCE / f"{HOST_NAME}.vcf.gz.tbi",
     output:
-        table=RECALIBRATE / "{sample_id}.bsqr.txt",
+        recal_table=RECALIBRATE / "{sample_id}.bsqr.txt",
     log:
         RECALIBRATE / "{sample_id}.log",
-    conda:
-        "../../environments/gatk4.yml"
     group:
         "align_{sample_id}"
-    shell:
-        """
-        gatk BaseRecalibrator \
-            --input {input.cram} \
-            --reference {input.reference} \
-            --known-sites {input.known_sites} \
-            --output {output.table} \
-        2> {log} 1>&2
-        """
+    wrapper:
+        "v5.2.1/bio/gatk/baserecalibrator"
 
 
 rule align__recalibrate__applybqsr:
