@@ -5,10 +5,6 @@ default-resources:
     mem_mb: 1024
 
 set-threads:
-    # reference
-    reference__recompress__genome: 8
-    reference__recompress__vcf: 8
-    reference__recompress__gtf: 8
     # align
     align__bwamem2__index: 8
     align__bwamem2__map: 24
@@ -16,15 +12,9 @@ set-threads:
     align__mark_duplicates__bam_to_cram: 24
     align__recalibrate__applybqsr: 0
     align__recalibrate__bam_to_cram: 24
-    # annotate
-    # swaps
-    # report
 
 
 set-resources:
-    # reference
-    reference__recompress__gtf:
-        mem_mb: 4G
     # align
     align__bwamem2__index:
         mem_mb: 64 * 1024

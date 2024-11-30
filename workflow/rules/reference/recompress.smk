@@ -9,6 +9,7 @@ rule reference__recompress__genome:
     conda:
         "../../environments/reference.yml"
     cache: "omit-software"
+    threads: 8
     shell:
         """
         ( gzip \
@@ -35,6 +36,7 @@ rule reference__recompress__vcf:
     conda:
         "../../environments/reference.yml"
     cache: "omit-software"
+    threads: 8
     shell:
         """
         ( gzip \
@@ -59,6 +61,9 @@ rule reference__recompress__gtf:
     conda:
         "../../environments/reference.yml"
     cache: "omit-software"
+    threads: 8
+    resources:
+        mem_mb=8 * 1024,
     shell:
         """
         ( bedtools sort \
