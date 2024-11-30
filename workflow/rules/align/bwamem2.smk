@@ -12,6 +12,10 @@ rule align__bwamem2__index:
     log:
         INDEX / f"{HOST_NAME}.log",
     cache: "omit-software"
+    threads: 8
+    resources:
+        mem_mb=64 * 1024,
+        runtime=24 * 60,
     wrapper:
         "v5.2.1/bio/bwa-mem2/index"
 
@@ -53,6 +57,10 @@ rule align__bwamem2__map:
         sort_extra="",
     group:
         "align_{sample_id}"
+    threads: 24
+    resources:
+        mem_mb=64 * 1024,
+        runtime=24 * 60,
     wrapper:
         "v5.2.1/bio/bwa-mem2/mem"
 
