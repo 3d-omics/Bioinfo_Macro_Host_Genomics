@@ -18,6 +18,9 @@ rule variants__call__haplotype_caller:
         ploidy=get_ploidy_of_sample_and_chromosome,
         interval=get_interval_for_haplotype_caller,
         mock_interval=generate_mock_interval,
+    resources:
+        mem_mb=8 * 1024,
+        time_min=24 * 60,
     shell:
         """
         if [[ {params.ploidy} -eq 0 ]] ; then
@@ -64,6 +67,9 @@ rule variants__call__combine_gvcfs:
         gvcf=CALL / "{region}.vcf.gz",
     log:
         CALL / "{region}.log",
+    resources:
+        mem_mb=16 * 1024,
+        runtime=24 * 60,
     wrapper:
         "v5.2.1/bio/gatk/combinegvcfs"
 
