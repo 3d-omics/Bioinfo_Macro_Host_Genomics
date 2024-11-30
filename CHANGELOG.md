@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.3.0](https://github.com/3d-omics/hg_genotype/compare/v1.2.0...v1.3.0) (2024-11-30)
+
+
+### Features
+
+* **combine_gvcfs:** use wrapper ([f3645cd](https://github.com/3d-omics/hg_genotype/commit/f3645cd0a923268024c4539dd80a5a6961717d0c))
+* **recalibrate:** use wrapper ([ffffc43](https://github.com/3d-omics/hg_genotype/commit/ffffc4319341ad5e87c320561c1de434b69e6f1e))
+* **recalibrate:** use wrapper ([ea42be6](https://github.com/3d-omics/hg_genotype/commit/ea42be6ae320808d1b445de023988c304b22b8ba))
+* replace bcftools concat ([651d5bd](https://github.com/3d-omics/hg_genotype/commit/651d5bd188100f44865dfc15671cc0530c14787c))
+* replace bcftools view ([6a31136](https://github.com/3d-omics/hg_genotype/commit/6a311361b04327d2985d9b4e2f889b7efb248bed))
+* replace GenotypeGVCFs ([57bf148](https://github.com/3d-omics/hg_genotype/commit/57bf14829d2d9f37e4e3c8ec939963e64ec278ca))
+* replace multiqc in align ([3778be8](https://github.com/3d-omics/hg_genotype/commit/3778be85fbeae820f732b966250aaee49fd78f6a))
+* replace multiqc in annotate ([57ef2d9](https://github.com/3d-omics/hg_genotype/commit/57ef2d98a28fae9a7eafd46a6cfca663a47cc4b7))
+* replace multiqc in swaps ([f966381](https://github.com/3d-omics/hg_genotype/commit/f966381b8bd3da22bf3b7f6eba616793a826f541))
+* replace SelectVatiants and VariantFiltration ([5e8d4ea](https://github.com/3d-omics/hg_genotype/commit/5e8d4eaea6dfae255e57ac8187412dec45de3e43))
+* replace snpeff ([fbe13aa](https://github.com/3d-omics/hg_genotype/commit/fbe13aad401abeebd7d1185a6e96cc0b97e8a05c))
+* replace snpeff download ([4e48a74](https://github.com/3d-omics/hg_genotype/commit/4e48a74a47cd13924ea75a3a0836f8fa7eb8afed))
+* replace vep and add vep_plugins ([0be0fa9](https://github.com/3d-omics/hg_genotype/commit/0be0fa9a98b76bf859c42be5951842f223e17dcb))
+* substitute markduplicates with a wrapper ([acf4663](https://github.com/3d-omics/hg_genotype/commit/acf46639fa7ec35b57174dc6ea2861670dfc8706))
+* use bwamem2 from wrapper ([0dfbab5](https://github.com/3d-omics/hg_genotype/commit/0dfbab52442e1a5b21f59291edb9652768472fc0))
+
 ## [1.2.0](https://github.com/3d-omics/hg_genotype/compare/v1.1.4...v1.2.0) (2024-11-12)
 
 
