@@ -18,12 +18,7 @@ FILTER = VARIANTS / "filter"
 POSTERIORS = VARIANTS / "posteriors"
 
 ANNOTATE = RESULTS / "annotate"
-SNPEFF_DB = Path("resources/snpeff/")
-SNPEFF = ANNOTATE / "snpeff"
 VEP = ANNOTATE / "vep"
-
-REPORT = Path("reports/")
-STEP = REPORT / "step"
 
 SWAPS = Path("results/swaps/")
 SOMALIER = SWAPS / "somalier"

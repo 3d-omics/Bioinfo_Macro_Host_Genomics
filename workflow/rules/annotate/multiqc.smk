@@ -1,5 +1,5 @@
 rule annotate__multiqc:
-    """Collect all reports for the snpeff step"""
+    """Collect all reports for the VEP step"""
     input:
         [VEP / f"{sample}.vep.html" for sample in SAMPLES],
     output:

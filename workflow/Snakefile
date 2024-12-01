@@ -21,9 +21,10 @@ SAMPLES = samples["sample_id"].drop_duplicates().values.tolist()
 SAMPLE_LIBRARY = samples[["sample_id", "library_id"]].values.tolist()
 
 HOST_NAME = features["reference"]["name"]
-SNPEFF_DBS = features["snpeff"]["genome"]
+
 BAM_REPORTS = ["stats.tsv"]  # + ["flagstats.txt", "idxstats.tsv"]
 PICARD_REPORTS = BAM_REPORTS + ["metrics.tsv"]
+
 REGIONS_BED4 = pd.read_table(
     features["reference"]["regions"],
     dtype="str",
