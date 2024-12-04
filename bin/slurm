@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+snakemake \
+    --cache \
+    --cores 24  \
+    --executor slurm \
+    --jobs 100 \
+    --keep-going \
+    --latency-wait 60 \
+    --profile profile/default \
+    --rerun-incomplete \
+    --use-conda \
+    "$@"

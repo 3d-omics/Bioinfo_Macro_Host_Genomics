@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+snakemake \
+    --use-conda \
+    --cache \
+    --rerun-incomplete \
+    --cores 8  \
+    --keep-going \
+    --profile profile/default \
+    "$@"
