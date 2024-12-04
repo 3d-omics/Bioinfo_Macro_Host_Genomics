@@ -36,9 +36,9 @@ rule align__bcftools__concat:
     input:
         [BCFTOOLS / f"{region}.bcf" for region in REGIONS],
     output:
-        BCFTOOLS / f"{HOST_NAME}.vcf.gz",
+        BCFTOOLS / f"bcftools.vcf.gz",
     log:
-        BCFTOOLS / f"{HOST_NAME}.log",
+        BCFTOOLS / f"bcftools.log",
     conda:
         "../../environments/bcftools.yml"
     shell:

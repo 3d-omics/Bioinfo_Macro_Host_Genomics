@@ -70,3 +70,9 @@ rule all:
         rules.variants__all.input,
         rules.annotate__all.input,
         rules.swaps__all.input,
+
+
+rule cache:
+    input:
+        rules.reference__recompress__all.input,
+        rules.align__bwamem2__index__all.input,
