@@ -53,4 +53,4 @@ rule align__bcftools__concat:
 
 rule align__bcftools__all:
     input:
-        BCFTOOLS / f"{HOST_NAME}.vcf.gz",
+        BCFTOOLS / f"bcftools.vcf.gz",
