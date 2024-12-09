@@ -20,7 +20,7 @@ rule variants__call__haplotype_caller:
         mock_interval=generate_mock_interval,
     resources:
         mem_mb=8 * 1024,
-        time_min=24 * 60,
+        runtime=24 * 60,
     shell:
         """
         if [[ {params.ploidy} -eq 0 ]] ; then
